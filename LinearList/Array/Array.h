@@ -25,9 +25,10 @@ public:
 
 	virtual void clear() override;
 	virtual bool empty() const override;
-	void resize(std::size_t , const elemType & = 0);
+	void resize(std::size_t);
+	void resize(std::size_t , const elemType &);
 	virtual std::size_t size() const override;
-	iterator insert(const_iterator , const elemType &);//add an element before a position
+	iterator insert(const_iterator , const elemType &);
 	iterator erase(const_iterator);
 	const_iterator find(const elemType &) const;
 	iterator find(const elemType &);
@@ -63,9 +64,10 @@ Array<elemType>::Array(const Array<elemType> &rhs)
 template <class elemType>
 Array<elemType> &Array<elemType>::operator=(const Array<elemType> &rhs)
 {
-	elemType *tmp = new elemType [rhs.maxsize];
-	for (std::size_t i = 0;i < rhs.tot;++ i) tmp[i] = rhs.array[i];
-	delete [] array , array = tmp;
+	if (this == &rhs) return *this;
+	delete [] array;
+	array = new elemType [rhs.maxsize];
+	for (std::size_t i = 0;i < rhs.tot;++ i) array[i] = rhs.array[i];
 	maxsize = rhs.maxsize , tot = rhs.tot;
 	return *this;
 }
@@ -75,6 +77,15 @@ void Array<elemType>::clear(){tot = 0;}
 
 template <class elemType>
 bool Array<elemType>::empty() const {return !tot;}
+
+template <class elemType>
+void Array<elemType>::resize(std::size_t n)
+{
+	Array tmp;
+	for (std::size_t i = 0;i < n && i < tot;++ i) tmp.push_back(array[i]);
+	for (std::size_t i = tot;i < n;++ i) tmp.push_back(elemType());
+	operator=(tmp);
+}
 
 template <class elemType>
 void Array<elemType>::resize(std::size_t n , const elemType &val)

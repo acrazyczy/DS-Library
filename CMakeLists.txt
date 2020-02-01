@@ -5,6 +5,7 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -g")
 include_directories(
         LinearList
         LinearList/Array
+        LinearList/LinkedList
         Stack
         Queue
         Tree
@@ -14,5 +15,5 @@ include_directories(
 )
 set(src_dir
         TestProgram/main.cpp
-        LinearList/LinearList.h LinearList/Array/Array.h)
+        LinearList/LinearList.h LinearList/Array/Array.h LinearList/LinkedList/LinkedList.h)
 add_executable(DSLib ${src_dir})
