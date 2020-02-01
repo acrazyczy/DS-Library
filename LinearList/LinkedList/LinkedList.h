@@ -5,8 +5,6 @@
 #ifndef DSLIB_LINKEDLIST_H
 #define DSLIB_LINKEDLIST_H
 
-#endif //DSLIB_LINKEDLIST_H
-
 #include "LinearList.h"
 
 template <class elemType>
@@ -384,3 +382,5 @@ elemType &LinkedList<elemType>::back() {return *(-- end());}
 
 template <class elemType>
 LinkedList<elemType>::~LinkedList(){clear() , delete head;}
+
+#endif //DSLIB_LINKEDLIST_H

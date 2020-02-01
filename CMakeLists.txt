@@ -15,5 +15,5 @@ include_directories(
 )
 set(src_dir
         TestProgram/main.cpp
-        LinearList/LinearList.h LinearList/Array/Array.h LinearList/LinkedList/LinkedList.h)
+        LinearList/LinearList.h LinearList/Array/Array.h LinearList/LinkedList/LinkedList.h Queue/Queue.h Stack/Stack.h)
 add_executable(DSLib ${src_dir})

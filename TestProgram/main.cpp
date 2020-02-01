@@ -1,10 +1,11 @@
-#include "LinkedList.h"
+#include "Queue.h"
+#include "Stack.h"
 #include <functional>
 #include <algorithm>
 #include <iostream>
 #include <fstream>
 
-void search(LinkedList<int> &list , int x , std::ofstream &out)
+/*void search(LinkedList<int> &list , int x , std::ofstream &out)
 {
 	LinkedList<int>::iterator it = list.find(x);
 	if (it == list.end()) out << x << " not found." << std::endl;
@@ -16,11 +17,11 @@ void search(LinkedList<int> &list , int x , std::ofstream &out)
 		for (auto x : list) out << x << " ";
 		out << std::endl;
 	}
-}
+}*/
 
 int main()
 {
-	LinkedList<int> list;
+	/*LinkedList<int> list;
 	std::ifstream in("data.in");
 	for (int x;in >> x;) list.push_back(x);
 	in.close();
@@ -52,6 +53,16 @@ int main()
 	for (auto x : list) out << x << " ";
 	out << std::endl;
 	search(list , 3 , out) , search(list , -3 , out);
+	out.close();*/
+	Queue<int> queue;Stack<int> stack;
+	std::ifstream in("data.in");
+	for (int x;in >> x;) queue.push(x) , stack.push(x);
+	in.close();
+	std::ofstream out("data.out");
+	for (;!queue.empty();queue.pop()) out << queue.front() << " ";
+	out << std::endl;
+	for (;!stack.empty();stack.pop()) out << stack.top() << " ";
+	out << std::endl;
 	out.close();
 	return 0;
 }

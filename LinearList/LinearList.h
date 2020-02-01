@@ -5,8 +5,6 @@
 #ifndef DSLIB_LINEARLIST_H
 #define DSLIB_LINEARLIST_H
 
-#endif //DSLIB_LINEARLIST_H
-
 #include <cstdlib>
 
 class OutOfBound{};
@@ -30,3 +28,5 @@ public:
 
 	virtual ~LinearList() = default;
 };
+
+#endif //DSLIB_LINEARLIST_H
