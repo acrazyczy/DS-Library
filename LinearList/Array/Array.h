@@ -81,7 +81,7 @@ bool Array<elemType>::empty() const {return !tot;}
 template <class elemType>
 void Array<elemType>::resize(std::size_t n)
 {
-	Array tmp;
+	Array<elemType> tmp;
 	for (std::size_t i = 0;i < n && i < tot;++ i) tmp.push_back(array[i]);
 	for (std::size_t i = tot;i < n;++ i) tmp.push_back(elemType());
 	operator=(tmp);
@@ -90,7 +90,7 @@ void Array<elemType>::resize(std::size_t n)
 template <class elemType>
 void Array<elemType>::resize(std::size_t n , const elemType &val)
 {
-	Array tmp;
+	Array<elemType> tmp;
 	for (std::size_t i = 0;i < n && i < tot;++ i) tmp.push_back(array[i]);
 	for (std::size_t i = tot;i < n;++ i) tmp.push_back(val);
 	operator=(tmp);
@@ -102,7 +102,7 @@ std::size_t Array<elemType>::size() const {return tot;}
 template <class elemType>
 typename Array<elemType>::iterator Array<elemType>::insert(Array<elemType>::const_iterator pos , const elemType &val)
 {
-	Array tmp;const_iterator it = begin();iterator ret;
+	Array<elemType> tmp;const_iterator it = begin();iterator ret;
 	for (;it != pos && it != end();++ it) tmp.push_back(*it);
 	if (it == end() && pos != end()) throw(OutOfBound());
 	ret = tmp.end() , tmp.push_back(val);
@@ -114,7 +114,7 @@ typename Array<elemType>::iterator Array<elemType>::insert(Array<elemType>::cons
 template <class elemType>
 typename Array<elemType>::iterator Array<elemType>::erase(Array<elemType>::const_iterator pos)
 {
-	Array tmp;const_iterator it = begin();iterator ret;
+	Array<elemType> tmp;const_iterator it = begin();iterator ret;
 	for (;it != pos && it != end();++ it) tmp.push_back(*it);
 	if (it == end() && pos != end()) throw(OutOfBound());
 	ret = tmp.end();

@@ -9,11 +9,12 @@ include_directories(
         Stack
         Queue
         Tree
-        Heap
+        PriorityQueue
+        PriorityQueue/BinaryHeap
         BST
         TestProgram
 )
 set(src_dir
         TestProgram/main.cpp
-        LinearList/LinearList.h LinearList/Array/Array.h LinearList/LinkedList/LinkedList.h Queue/Queue.h Stack/Stack.h)
+        LinearList/LinearList.h LinearList/Array/Array.h LinearList/LinkedList/LinkedList.h Queue/Queue.h Stack/Stack.h PriorityQueue/PriorityQueue.h PriorityQueue/BinaryHeap/BinaryHeap.h)
 add_executable(DSLib ${src_dir})

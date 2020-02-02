@@ -13,6 +13,8 @@ class Queue
 private:
 	LinkedList<elemType> list;
 public:
+	Queue() = default;
+
 	bool empty() const;
 	std::size_t size() const;
 
@@ -23,6 +25,8 @@ public:
 
 	void push(const elemType &);
 	void pop();
+
+	~Queue() = default;
 };
 
 template <class elemType>

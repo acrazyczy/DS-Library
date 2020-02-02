@@ -1,6 +1,4 @@
-#include "Queue.h"
-#include "Stack.h"
-#include <functional>
+#include "BinaryHeap.h"
 #include <algorithm>
 #include <iostream>
 #include <fstream>
@@ -54,7 +52,8 @@ int main()
 	out << std::endl;
 	search(list , 3 , out) , search(list , -3 , out);
 	out.close();*/
-	Queue<int> queue;Stack<int> stack;
+
+	/*Queue<int> queue;Stack<int> stack;
 	std::ifstream in("data.in");
 	for (int x;in >> x;) queue.push(x) , stack.push(x);
 	in.close();
@@ -62,6 +61,19 @@ int main()
 	for (;!queue.empty();queue.pop()) out << queue.front() << " ";
 	out << std::endl;
 	for (;!stack.empty();stack.pop()) out << stack.top() << " ";
+	out << std::endl;
+	out.close();*/
+
+	BinaryHeap<int> bheap , bheap_ , bheap__;
+	std::ifstream in("data.in");
+	for (int x;in >> x;) bheap.push(x);
+	in.close();
+	bheap__ = bheap;
+	std::ofstream out("data.out");
+	for (;!bheap.empty();bheap.pop()) out << bheap.top() << " ";
+	out << std::endl;
+	bheap_.push(-1) , bheap_.push(15) , bheap_.push(33) , bheap__.join(bheap_);
+	for (;!bheap__.empty();bheap__.pop()) out << bheap__.top() << " ";
 	out << std::endl;
 	out.close();
 	return 0;

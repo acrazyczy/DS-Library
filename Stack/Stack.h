@@ -13,6 +13,8 @@ class Stack
 private:
 	Array<elemType> list;
 public:
+	Stack() = default;
+
 	bool empty() const;
 	std::size_t size() const;
 
@@ -21,6 +23,8 @@ public:
 
 	void push(const elemType &);
 	void pop();
+
+	~Stack() = default;
 };
 
 template <class elemType>
