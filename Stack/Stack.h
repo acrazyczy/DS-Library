@@ -24,7 +24,7 @@ public:
 	void push(const elemType &);
 	void pop();
 
-	~Stack() = default;
+	virtual ~Stack() = default;
 };
 
 template <class elemType>

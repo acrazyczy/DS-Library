@@ -24,9 +24,9 @@ public:
 	virtual void push(const elemType &) override;
 	virtual void pop() override;
 
-	void join(BinaryHeap<elemType> &);
+	void join(BinaryHeap<elemType , compare> &);
 
-	~BinaryHeap() = default;
+	virtual ~BinaryHeap() = default;
 };
 
 template <class elemType , class compare>
@@ -66,6 +66,6 @@ void BinaryHeap<elemType , compare>::pop()
 }
 
 template <class elemType , class compare>
-void BinaryHeap<elemType , compare>::join(BinaryHeap<elemType> &rhs){for (;!rhs.empty();rhs.pop()) push(rhs.top());}
+void BinaryHeap<elemType , compare>::join(BinaryHeap<elemType , compare> &rhs){for (;!rhs.empty();rhs.pop()) push(rhs.top());}
 
 #endif //DSLIB_BINARYHEAP_H

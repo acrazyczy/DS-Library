@@ -5,6 +5,7 @@
 #ifndef DSLIB_PRIORITYQUEUE_H
 #define DSLIB_PRIORITYQUEUE_H
 
+#include "Exception.h"
 #include <functional>
 #include <cstdlib>
 

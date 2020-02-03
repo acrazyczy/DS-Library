@@ -26,7 +26,7 @@ public:
 	void push(const elemType &);
 	void pop();
 
-	~Queue() = default;
+	virtual ~Queue() = default;
 };
 
 template <class elemType>

@@ -19,7 +19,7 @@ private:
 		Node() : val() , prec(nullptr) , succ(nullptr) {};
 	}*head , *tail;
 
-	int tot;
+	std::size_t tot;
 public:
 	class const_iterator;
 

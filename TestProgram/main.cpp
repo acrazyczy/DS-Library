@@ -1,4 +1,4 @@
-#include "BinaryHeap.h"
+#include "LeftistTree.h"
 #include <algorithm>
 #include <iostream>
 #include <fstream>
@@ -64,16 +64,19 @@ int main()
 	out << std::endl;
 	out.close();*/
 
-	BinaryHeap<int> bheap , bheap_ , bheap__;
+	LeftistTree<int> ltree , ltree_ , ltree__;
 	std::ifstream in("data.in");
-	for (int x;in >> x;) bheap.push(x);
+	for (int x;in >> x;) ltree.push(x);
 	in.close();
-	bheap__ = bheap;
+	ltree__ = ltree;
 	std::ofstream out("data.out");
-	for (;!bheap.empty();bheap.pop()) out << bheap.top() << " ";
+	for (;!ltree.empty();ltree.pop()) out << ltree.top() << " ";
 	out << std::endl;
-	bheap_.push(-1) , bheap_.push(15) , bheap_.push(33) , bheap__.join(bheap_);
-	for (;!bheap__.empty();bheap__.pop()) out << bheap__.top() << " ";
+	ltree_.push(-1) , ltree_.push(15) , ltree_.push(33) , ltree__.join(ltree_);
+	for (;!ltree__.empty();ltree__.pop()) out << ltree__.top() << " ";
+	out << std::endl;
+	for (int i = 0;i < 100000;++ i) ltree.push(i & 1 ? i : -i);
+	for (;!ltree.empty();ltree.pop()) out << ltree.top() << " ";
 	out << std::endl;
 	out.close();
 	return 0;

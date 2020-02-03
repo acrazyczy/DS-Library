@@ -5,9 +5,8 @@
 #ifndef DSLIB_LINEARLIST_H
 #define DSLIB_LINEARLIST_H
 
+#include "Exception.h"
 #include <cstdlib>
-
-class OutOfBound{};
 
 template <class elemType>
 class LinearList
