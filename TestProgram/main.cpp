@@ -1,4 +1,4 @@
-#include "LeftistTree.h"
+#include "SkewHeap.h"
 #include <algorithm>
 #include <iostream>
 #include <fstream>
@@ -64,7 +64,7 @@ int main()
 	out << std::endl;
 	out.close();*/
 
-	LeftistTree<int> ltree , ltree_ , ltree__;
+	SkewHeap<int> ltree , ltree_ , ltree__;
 	std::ifstream in("data.in");
 	for (int x;in >> x;) ltree.push(x);
 	in.close();

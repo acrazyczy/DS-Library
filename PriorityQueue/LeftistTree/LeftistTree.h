@@ -114,4 +114,5 @@ void LeftistTree<elemType , compare>::clear(LeftistTree<elemType , compare>::Nod
 	if (rt == nullptr) return;
 	clear(rt -> left) , clear(rt -> right) , delete rt , rt = nullptr;
 }
+
 #endif //DSLIB_LEFTISTTREE_H
