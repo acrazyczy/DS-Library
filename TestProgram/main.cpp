@@ -1,4 +1,4 @@
-#include "SkewHeap.h"
+#include "BinomialHeap.h"
 #include <algorithm>
 #include <iostream>
 #include <fstream>
@@ -64,7 +64,7 @@ int main()
 	out << std::endl;
 	out.close();*/
 
-	SkewHeap<int> ltree , ltree_ , ltree__;
+	BinomialHeap<int> ltree , ltree_ , ltree__;
 	std::ifstream in("data.in");
 	for (int x;in >> x;) ltree.push(x);
 	in.close();
