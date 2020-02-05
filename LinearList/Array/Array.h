@@ -16,8 +16,53 @@ private:
 
 	void extend();
 public:
-	typedef const elemType* const_iterator;
-	typedef elemType* iterator;
+	class const_iterator;
+
+	class iterator
+	{
+		friend class Array<elemType>;
+		friend const_iterator::const_iterator(iterator);
+	private:
+		elemType *ptr;
+	public:
+		explicit iterator(elemType *ptr_ = nullptr) : ptr(ptr_) {}
+
+		elemType &operator*() const;
+		std::size_t operator-(const iterator &) const;
+		bool operator==(const iterator &) const;
+		bool operator!=(const iterator &) const;
+
+		iterator &operator++();
+		const iterator &operator++(int);
+		const iterator &operator+(const int &);
+
+		iterator &operator--();
+		const iterator &operator--(int);
+		const iterator &operator-(const int &);
+	};
+
+	class const_iterator
+	{
+		friend class Array<elemType>;
+	private:
+		elemType *ptr;
+	public:
+		explicit const_iterator(elemType *ptr_ = nullptr) : ptr(ptr_) {}
+		const_iterator(iterator it) : ptr(it.ptr) {}
+
+		const elemType &operator*() const;
+		std::size_t operator-(const const_iterator &) const;
+		bool operator==(const const_iterator &) const;
+		bool operator!=(const const_iterator &) const;
+
+		const_iterator &operator++();
+		const const_iterator &operator++(int);
+		const const_iterator &operator+(const int &);
+
+		const_iterator &operator--();
+		const const_iterator &operator--(int);
+		const const_iterator &operator-(const int &);
+	};
 
 	Array() : LinearList<elemType>() , array(new elemType [1]) , maxsize(1) , tot(0) {}
 	Array(const Array<elemType> &);
@@ -38,9 +83,9 @@ public:
 	void push_back(const elemType &);
 	void pop_back();
 
-	const_iterator begin() const;
+	const_iterator cbegin() const;
 	iterator begin();
-	const_iterator end() const;
+	const_iterator cend() const;
 	iterator end();
 
 	virtual const elemType &front() const override;
@@ -52,6 +97,131 @@ public:
 
 	virtual ~Array();
 };
+
+template <class elemType>
+elemType &Array<elemType>::iterator::operator*() const {return *ptr;}
+
+template <class elemType>
+std::size_t Array<elemType>::iterator::operator-(const iterator &it) const {return ptr - it.ptr;}
+
+template <class elemType>
+bool Array<elemType>::iterator::operator==(const iterator &it) const {return ptr == it.ptr;}
+
+template <class elemType>
+bool Array<elemType>::iterator::operator!=(const iterator &it) const {return ptr != it.ptr;}
+
+template <class elemType>
+typename Array<elemType>::iterator &Array<elemType>::iterator::operator++()
+{
+	++ ptr;
+	return *this;
+}
+
+template <class elemType>
+const typename Array<elemType>::iterator &Array<elemType>::iterator::operator++(int x)
+{
+	static iterator tmp;
+	tmp = *this , ++ ptr;
+	return tmp;
+}
+
+template <class elemType>
+const typename Array<elemType>::iterator &Array<elemType>::iterator::operator+(const int &x)
+{
+	if (x < 0) return operator-(-x);
+	static iterator tmp;
+	tmp = *this;
+	for (int i = 0;i < x;++ i) tmp = ++ tmp;
+	return tmp;
+}
+
+template <class elemType>
+typename Array<elemType>::iterator &Array<elemType>::iterator::operator--()
+{
+	-- ptr;
+	return *this;
+}
+
+template <class elemType>
+const typename Array<elemType>::iterator &Array<elemType>::iterator::operator--(int x)
+{
+	static iterator tmp;
+	tmp = *this , -- ptr;
+	return tmp;
+}
+
+template <class elemType>
+const typename Array<elemType>::iterator &Array<elemType>::iterator::operator-(const int &x)
+{
+	if (x < 0) return operator+(-x);
+	static iterator tmp;
+	tmp = *this;
+	for (int i = 0;i < x;++ i) -- tmp;
+	return tmp;
+}
+
+template <class elemType>
+const elemType &Array<elemType>::const_iterator::operator*() const {return *ptr;}
+
+template <class elemType>
+std::size_t Array<elemType>::const_iterator::operator-(const const_iterator &it) const {return ptr - it.ptr;}
+
+template <class elemType>
+bool Array<elemType>::const_iterator::operator==(const const_iterator &it) const {return ptr == it.ptr;}
+
+template <class elemType>
+bool Array<elemType>::const_iterator::operator!=(const const_iterator &it) const {return ptr != it.ptr;}
+
+template <class elemType>
+typename Array<elemType>::const_iterator &Array<elemType>::const_iterator::operator++()
+{
+	++ ptr;
+	return *this;
+}
+
+template <class elemType>
+const typename Array<elemType>::const_iterator &Array<elemType>::const_iterator::operator++(int x)
+{
+	static const_iterator tmp;
+	tmp = *this , ++ ptr;
+	return tmp;
+}
+
+template <class elemType>
+const typename Array<elemType>::const_iterator &Array<elemType>::const_iterator::operator+(const int &x)
+{
+	if (x < 0) return operator-(-x);
+	static const_iterator tmp;
+	tmp = *this;
+	for (int i = 0;i < x;++ i) ++ tmp;
+	return tmp;
+}
+
+template <class elemType>
+typename Array<elemType>::const_iterator &Array<elemType>::const_iterator::operator--()
+{
+	-- ptr;
+	return *this;
+}
+
+template <class elemType>
+const typename Array<elemType>::const_iterator &Array<elemType>::const_iterator::operator--(int x)
+{
+	static const_iterator tmp;
+	tmp = *this , -- ptr;
+	return tmp;
+}
+
+template <class elemType>
+const typename Array<elemType>::const_iterator &Array<elemType>::const_iterator::operator-(const int &x)
+{
+	if (x < 0) return operator+(-x);
+	static const_iterator tmp;
+	tmp = *this;
+	for (int i = 0;i < x;++ i) -- tmp;
+	return tmp;
+}
+
 
 template <class elemType>
 Array<elemType>::Array(const Array<elemType> &rhs)
@@ -102,46 +272,47 @@ std::size_t Array<elemType>::size() const {return tot;}
 template <class elemType>
 typename Array<elemType>::iterator Array<elemType>::insert(Array<elemType>::const_iterator pos , const elemType &val)
 {
-	Array<elemType> tmp;const_iterator it = begin();iterator ret;
-	for (;it != pos && it != end();++ it) tmp.push_back(*it);
-	if (it == end() && pos != end()) throw(OutOfBound());
-	ret = tmp.end() , tmp.push_back(val);
-	for (it = pos;it != end();++ it) tmp.push_back(*it);
+	Array<elemType> tmp;const_iterator it = cbegin();
+	for (;it != pos && it != cend();++ it) tmp.push_back(*it);
+	if (it == cend() && pos != cend()) throw(OutOfBound());
+	tmp.push_back(val);
+	for (it = pos;it != cend();++ it) tmp.push_back(*it);
+	std::size_t gap = pos - cbegin();
 	operator=(tmp);
-	return ret;
+	return begin() + gap;
 }
 
 template <class elemType>
 typename Array<elemType>::iterator Array<elemType>::erase(Array<elemType>::const_iterator pos)
 {
-	Array<elemType> tmp;const_iterator it = begin();iterator ret;
-	for (;it != pos && it != end();++ it) tmp.push_back(*it);
-	if (it == end() && pos != end()) throw(OutOfBound());
-	ret = tmp.end();
-	for (it = pos + 1;it != end();++ it) tmp.push_back(*it);
+	Array<elemType> tmp;const_iterator it = cbegin();
+	for (;it != pos && it != cend();++ it) tmp.push_back(*it);
+	if (it == cend() && pos != cend()) throw(OutOfBound());
+	for (it = pos + 1;it != cend();++ it) tmp.push_back(*it);
+	std::size_t gap = pos - cbegin();
 	operator=(tmp);
-	return ret;
+	return begin() + gap;
 }
 
 template <class elemType>
 typename Array<elemType>::const_iterator Array<elemType>::find(const elemType &val) const
 {
-	const_iterator it = begin();
-	for (;it != end() && *it != val;++ it);
+	const_iterator it = cbegin();
+	for (;it != cend() && *it != val;++ it);
 	return it;
 }
 
 template <class elemType>
 typename Array<elemType>::iterator Array<elemType>::find(const elemType &val)
 {
-	return const_cast<iterator>(static_cast<const Array<elemType> &>(*this).find(val));
+	return iterator(static_cast<const Array<elemType> &>(*this).find(val).ptr);
 }
 
 template <class elemType>
-void Array<elemType>::push_front(const elemType &val){insert(begin() , val);}
+void Array<elemType>::push_front(const elemType &val){insert(cbegin() , val);}
 
 template <class elemType>
-void Array<elemType>::pop_front(){erase(begin());}
+void Array<elemType>::pop_front(){erase(cbegin());}
 
 template <class elemType>
 void Array<elemType>::push_back(const elemType &val)
@@ -158,19 +329,19 @@ void Array<elemType>::pop_back()
 }
 
 template <class elemType>
-typename Array<elemType>::const_iterator Array<elemType>::begin() const {return array;}
+typename Array<elemType>::const_iterator Array<elemType>::cbegin() const {return const_iterator(array);}
 
 template <class elemType>
-typename Array<elemType>::iterator Array<elemType>::begin(){return array;}
+typename Array<elemType>::iterator Array<elemType>::begin(){return iterator(array);}
 
 template <class elemType>
-typename Array<elemType>::const_iterator Array<elemType>::end() const {return array + tot;}
+typename Array<elemType>::const_iterator Array<elemType>::cend() const {return const_iterator(array + tot);}
 
 template <class elemType>
-typename Array<elemType>::iterator Array<elemType>::end(){return array + tot;}
+typename Array<elemType>::iterator Array<elemType>::end(){return iterator(array + tot);}
 
 template <class elemType>
-const elemType &Array<elemType>::front() const {return *begin();}
+const elemType &Array<elemType>::front() const {return *cbegin();}
 
 template <class elemType>
 elemType &Array<elemType>::front(){return *begin();}

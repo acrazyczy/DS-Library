@@ -21,11 +21,9 @@ private:
 
 	std::size_t tot;
 public:
-	class const_iterator;
-
 	class iterator
 	{
-		friend const_iterator::const_iterator(iterator);
+		friend class LinkedList<elemType>;
 	private:
 		Node *ptr;
 	public:
@@ -51,7 +49,6 @@ public:
 		Node *ptr;
 	public:
 		explicit const_iterator(Node *ptr_ = nullptr) : ptr(ptr_) {}
-		const_iterator(iterator it) : ptr(it.ptr) {}
 
 		const elemType &operator*() const;
 		bool operator==(const const_iterator &) const;
@@ -85,9 +82,9 @@ public:
 	void push_back(const elemType &);
 	void pop_back();
 
-	const_iterator begin() const;
+	const_iterator cbegin() const;
 	iterator begin();
-	const_iterator end() const;
+	const_iterator cend() const;
 	iterator end();
 
 	virtual const elemType &front() const override;
@@ -96,6 +93,8 @@ public:
 	virtual elemType &operator[](const int &) override;
 	virtual const elemType &back() const override;
 	virtual elemType &back() override;
+
+	void merge(LinkedList<elemType> &);
 
 	virtual ~LinkedList();
 };
@@ -226,7 +225,7 @@ template <class elemType>
 LinkedList<elemType>::LinkedList(const LinkedList<elemType> &rhs)
 {
 	tot = rhs.tot , head = nullptr , tail = nullptr;
-	for (const_iterator it = rhs.begin();it != rhs.end();++ it)
+	for (const_iterator it = rhs.cbegin();it != rhs.cend();++ it)
 	{
 		Node *node = new Node;
 		node -> val = *it , node -> prec = tail;
@@ -246,7 +245,7 @@ LinkedList<elemType> &LinkedList<elemType>::operator=(const LinkedList<elemType>
 	if (this == &rhs) return *this;
 	clear();
 	tot = rhs.tot , head = tail = nullptr;
-	for (const_iterator it = rhs.begin();it != rhs.end();++ it)
+	for (const_iterator it = rhs.cbegin();it != rhs.cend();++ it)
 	{
 		Node *node = new Node;
 		node -> val = *it , node -> prec = tail;
@@ -274,7 +273,7 @@ bool LinkedList<elemType>::empty() const {return !tot;}
 template <class elemType>
 void LinkedList<elemType>::resize(std::size_t n)
 {
-	LinkedList tmp;const_iterator it = begin();
+	LinkedList tmp;const_iterator it = cbegin();
 	for (std::size_t i = 0;i < n && i < tot;++ i , ++ it) tmp.push_back(*it);
 	for (std::size_t i = tot;i < n;++ i) tmp.push_back(elemType());
 	operator=(tmp);
@@ -318,8 +317,8 @@ typename LinkedList<elemType>::iterator LinkedList<elemType>::erase(typename Lin
 template <class elemType>
 typename LinkedList<elemType>::const_iterator LinkedList<elemType>::find(const elemType &val) const
 {
-	const_iterator it = begin();
-	for (;it != end() && *it != val;++ it);
+	const_iterator it = cbegin();
+	for (;it != cend() && *it != val;++ it);
 	return it;
 }
 
@@ -330,31 +329,31 @@ typename LinkedList<elemType>::iterator LinkedList<elemType>::find(const elemTyp
 }
 
 template <class elemType>
-void LinkedList<elemType>::push_front(const elemType &val){insert(begin() , val);}
+void LinkedList<elemType>::push_front(const elemType &val){insert(cbegin() , val);}
 
 template <class elemType>
-void LinkedList<elemType>::pop_front(){erase(begin());}
+void LinkedList<elemType>::pop_front(){erase(cbegin());}
 
 template <class elemType>
-void LinkedList<elemType>::push_back(const elemType &val){insert(end() , val);}
+void LinkedList<elemType>::push_back(const elemType &val){insert(cend() , val);}
 
 template <class elemType>
-void LinkedList<elemType>::pop_back(){erase(-- end());}
+void LinkedList<elemType>::pop_back(){erase(-- cend());}
 
 template <class elemType>
-typename LinkedList<elemType>::const_iterator LinkedList<elemType>::begin() const {return const_iterator(head);}
+typename LinkedList<elemType>::const_iterator LinkedList<elemType>::cbegin() const {return const_iterator(head);}
 
 template <class elemType>
 typename LinkedList<elemType>::iterator LinkedList<elemType>::begin(){return iterator(head);}
 
 template <class elemType>
-typename LinkedList<elemType>::const_iterator LinkedList<elemType>::end() const {return const_iterator(tail);}
+typename LinkedList<elemType>::const_iterator LinkedList<elemType>::cend() const {return const_iterator(tail);}
 
 template <class elemType>
 typename LinkedList<elemType>::iterator LinkedList<elemType>::end(){return iterator(tail);}
 
 template <class elemType>
-const elemType &LinkedList<elemType>::front() const {return *begin();}
+const elemType &LinkedList<elemType>::front() const {return *cbegin();}
 
 template <class elemType>
 elemType &LinkedList<elemType>::front(){return *begin();}
@@ -363,7 +362,7 @@ template <class elemType>
 const elemType &LinkedList<elemType>::operator[](const int &pos) const
 {
 	if (pos < 0 || pos >= tot) throw(OutOfBound());
-	const_iterator it = begin();
+	const_iterator it = cbegin();
 	for (int i = 1;i <= pos;++ i) ++ it;
 	return *it;
 }
@@ -375,10 +374,18 @@ elemType &LinkedList<elemType>::operator[](const int &pos)
 }
 
 template <class elemType>
-const elemType &LinkedList<elemType>::back() const {return *(-- end());}
+const elemType &LinkedList<elemType>::back() const {return *(-- cend());}
 
 template <class elemType>
 elemType &LinkedList<elemType>::back() {return *(-- end());}
+
+template <class elemType>
+void LinkedList<elemType>::merge(LinkedList<elemType> &rhs)
+{
+	if (tail -> prec == nullptr) head = rhs.head;
+	else tail -> prec -> succ = rhs.head;
+	rhs.head = tail , tail = rhs.tail , rhs.tail = rhs.head , tot += rhs.tot , rhs.tot = 0;
+}
 
 template <class elemType>
 LinkedList<elemType>::~LinkedList(){clear() , delete head;}

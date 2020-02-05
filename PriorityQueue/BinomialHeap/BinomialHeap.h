@@ -50,7 +50,7 @@ BinomialHeap<elemType , compare>::BinomialHeap(Node *root_) : tot(1) {root.push_
 template <class elemType , class compare>
 BinomialHeap<elemType , compare>::BinomialHeap(const BinomialHeap<elemType , compare> &rhs)
 {
-	for (typename LinkedList<Node *>::const_iterator it = rhs.root.begin();it != rhs.root.end();++ it) root.push_back(copy(*it));
+	for (typename LinkedList<Node *>::const_iterator it = rhs.root.cbegin();it != rhs.root.cend();++ it) root.push_back(copy(*it));
 	tot = rhs.tot;
 }
 
@@ -59,7 +59,7 @@ BinomialHeap<elemType , compare> &BinomialHeap<elemType , compare>::operator=(co
 {
 	if (this == &rhs) return *this;
 	clear();
-	for (typename LinkedList<Node *>::const_iterator it = rhs.root.begin();it != rhs.root.end();++ it) root.push_back(copy(*it));
+	for (typename LinkedList<Node *>::const_iterator it = rhs.root.cbegin();it != rhs.root.cend();++ it) root.push_back(copy(*it));
 	tot = rhs.tot;
 	return *this;
 }
@@ -76,7 +76,7 @@ const elemType &BinomialHeap<elemType , compare>::top() const
 	if (empty()) throw(OutOfBound());
 	static elemType ret;
 	ret = root.front() -> val;
-	for (typename LinkedList<Node *>::const_iterator it = root.begin();it != root.end();++ it)
+	for (typename LinkedList<Node *>::const_iterator it = root.cbegin();it != root.cend();++ it)
 		if (compare()(ret , (*it) -> val))
 			ret = (*it) -> val;
 	return ret;
@@ -94,9 +94,9 @@ template <class elemType , class compare>
 void BinomialHeap<elemType , compare>::pop()
 {
 	if (empty()) throw(OutOfBound());
-	typename LinkedList<Node *>::iterator rt = root.end();
-	for (typename LinkedList<Node *>::iterator it = root.begin();it != root.end();++ it)
-		if (rt == root.end() || compare()((*rt) -> val , (*it) -> val)) rt = it;
+	typename LinkedList<Node *>::const_iterator rt = root.cend();
+	for (typename LinkedList<Node *>::const_iterator it = root.cbegin();it != root.cend();++ it)
+		if (rt == root.cend() || compare()((*rt) -> val , (*it) -> val)) rt = it;
 	tot -= 1 << (*rt) -> depth;
 	BinomialHeap<elemType , compare> tmp;tmp.tot = (1 << (*rt) -> depth) - 1;
 	for (typename LinkedList<Node *>::iterator it = (*rt) -> dec.begin();it != (*rt) -> dec.end();++ it) tmp.root.push_back(*it);
@@ -109,6 +109,9 @@ void BinomialHeap<elemType , compare>::join(BinomialHeap<elemType , compare> &rh
 	LinkedList<Node *> root_;
 	for (;!root.empty() || !rhs.root.empty();)
 	{
+		if (root.empty() && (root_.empty() || rhs.root.front() -> depth != root_.back() -> depth)) root_.merge(rhs.root);
+		else if (rhs.root.empty() && (root_.empty() || root.front() -> depth != root_.back() -> depth)) root_.merge(root);
+		if (root.empty() && rhs.root.empty()) continue;
 		Node *tmp = nullptr;
 		if (root.empty() || !rhs.root.empty() && rhs.root.front() -> depth < root.front() -> depth) tmp = rhs.root.front() , rhs.root.pop_front();
 		else if (rhs.root.empty() || !root.empty() && root.front() -> depth < rhs.root.front() -> depth) tmp = root.front() , root.pop_front();
@@ -142,7 +145,7 @@ typename BinomialHeap<elemType , compare>::Node *BinomialHeap<elemType , compare
 {
 	if (rt == nullptr) return nullptr;
 	Node *ret = new Node;ret -> val = rt -> val , ret -> depth = rt -> depth;
-	for (typename LinkedList<Node *>::const_iterator it = rt -> dec.begin();it != rt -> dec.end();++ it) ret -> dec.push_back(copy(*it));
+	for (typename LinkedList<Node *>::const_iterator it = rt -> dec.cbegin();it != rt -> dec.cend();++ it) ret -> dec.push_back(copy(*it));
 	return ret;
 }
 

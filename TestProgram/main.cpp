@@ -1,12 +1,14 @@
-#include "BinomialHeap.h"
-#include <algorithm>
+#include "BinaryHeap.h"
+#include <functional>
 #include <iostream>
+#include <cstdlib>
 #include <fstream>
+#include <ctime>
 
-/*void search(LinkedList<int> &list , int x , std::ofstream &out)
+void search(Array<int> &list , int x , std::ofstream &out)
 {
-	LinkedList<int>::iterator it = list.find(x);
-	if (it == list.end()) out << x << " not found." << std::endl;
+	Array<int>::const_iterator it = list.find(x);
+	if (it == list.cend()) out << x << " not found." << std::endl;
 	else
 	{
 		out << x << " found: " << *it << std::endl;
@@ -15,27 +17,28 @@
 		for (auto x : list) out << x << " ";
 		out << std::endl;
 	}
-}*/
+}
 
 int main()
 {
-	/*LinkedList<int> list;
+	/*Array<int> list , list_;
 	std::ifstream in("data.in");
 	for (int x;in >> x;) list.push_back(x);
-	in.close();
-	const LinkedList<int> const_list(list);
+	in.close() , list_ = list;
+	const Array<int> const_list(list);
+	//std::sort(list.begin() , list.end() , std::greater<int>());
 	std::ofstream out("data.out");
 	for (auto x : list) out << x << " ";
 	out << std::endl;
-	for (LinkedList<int>::iterator it = list.begin();it != list.end();++ it) out << *it << " ";
+	for (Array<int>::iterator it = list.begin();it != list.end();++ it) out << *it << " ";
 	out << std::endl;
-	for (LinkedList<int>::const_iterator it = const_list.begin();it != const_list.end();++ it) out << *it << " ";
+	for (Array<int>::const_iterator it = const_list.cbegin();it != const_list.cend();++ it) out << *it << " ";
 	out << std::endl;
 	size_t cnt = const_list.size();
 	for (size_t i = 0;i < cnt;++ i) out << const_list[i] << " ";
 	out << std::endl;
 	list.pop_back() , list.pop_front() , list.push_front(-1);
-	for (LinkedList<int>::iterator it = list.begin();it != list.end();++ it) out << *it << " ";
+	for (Array<int>::iterator it = list.begin();it != list.end();++ it) out << *it << " ";
 	out << std::endl;
 	cnt = list.size();
 	list[7] *= -1;
@@ -50,7 +53,14 @@ int main()
 	list.resize(15 , -2);
 	for (auto x : list) out << x << " ";
 	out << std::endl;
-	search(list , 3 , out) , search(list , -3 , out);
+	search(list , 5 , out) , search(list , -5 , out);
+	for (auto x : list) out << x << " ";
+	out << std::endl;
+	list.merge(list_);
+	for (auto x : list) out << x << " ";
+	out << std::endl;
+	for (auto x : list_) out << x << " ";
+	out << std::endl;
 	out.close();*/
 
 	/*Queue<int> queue;Stack<int> stack;
@@ -64,7 +74,9 @@ int main()
 	out << std::endl;
 	out.close();*/
 
-	BinomialHeap<int> ltree , ltree_ , ltree__;
+	std::srand(std::time(0));
+
+	BinaryHeap<int> ltree , ltree_ , ltree__;
 	std::ifstream in("data.in");
 	for (int x;in >> x;) ltree.push(x);
 	in.close();
@@ -75,7 +87,7 @@ int main()
 	ltree_.push(-1) , ltree_.push(15) , ltree_.push(33) , ltree__.join(ltree_);
 	for (;!ltree__.empty();ltree__.pop()) out << ltree__.top() << " ";
 	out << std::endl;
-	for (int i = 0;i < 100000;++ i) ltree.push(i & 1 ? i : -i);
+	for (int i = 0;i < 30;++ i) ltree.push(rand() % 1000);
 	for (;!ltree.empty();ltree.pop()) out << ltree.top() << " ";
 	out << std::endl;
 	out.close();
