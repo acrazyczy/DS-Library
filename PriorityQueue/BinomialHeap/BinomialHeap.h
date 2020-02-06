@@ -74,12 +74,11 @@ template <class elemType , class compare>
 const elemType &BinomialHeap<elemType , compare>::top() const
 {
 	if (empty()) throw(OutOfBound());
-	static elemType ret;
-	ret = root.front() -> val;
+	elemType ret = root.front() -> val;typename LinkedList<Node *>::const_iterator rt = root.cbegin();
 	for (typename LinkedList<Node *>::const_iterator it = root.cbegin();it != root.cend();++ it)
 		if (compare()(ret , (*it) -> val))
-			ret = (*it) -> val;
-	return ret;
+			ret = (*it) -> val , rt = it;
+	return (*rt) -> val;
 }
 
 template <class elemType , class compare>

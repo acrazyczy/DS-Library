@@ -1,11 +1,11 @@
-#include "BinaryHeap.h"
+#include "BinomialHeap.h"
 #include <functional>
 #include <iostream>
 #include <cstdlib>
 #include <fstream>
 #include <ctime>
 
-void search(Array<int> &list , int x , std::ofstream &out)
+/*void search(Array<int> &list , int x , std::ofstream &out)
 {
 	Array<int>::const_iterator it = list.find(x);
 	if (it == list.cend()) out << x << " not found." << std::endl;
@@ -17,7 +17,7 @@ void search(Array<int> &list , int x , std::ofstream &out)
 		for (auto x : list) out << x << " ";
 		out << std::endl;
 	}
-}
+}*/
 
 int main()
 {
@@ -76,7 +76,7 @@ int main()
 
 	std::srand(std::time(0));
 
-	BinaryHeap<int> ltree , ltree_ , ltree__;
+	BinomialHeap<int> ltree , ltree_ , ltree__;
 	std::ifstream in("data.in");
 	for (int x;in >> x;) ltree.push(x);
 	in.close();

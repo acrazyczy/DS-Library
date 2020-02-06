@@ -34,12 +34,12 @@ public:
 		bool operator!=(const iterator &) const;
 
 		iterator &operator++();
-		const iterator &operator++(int);
-		const iterator &operator+(const int &);
+		iterator operator++(int);
+		iterator operator+(const int &);
 
 		iterator &operator--();
-		const iterator &operator--(int);
-		const iterator &operator-(const int &);
+		iterator operator--(int);
+		iterator operator-(const int &);
 	};
 
 	class const_iterator
@@ -55,12 +55,12 @@ public:
 		bool operator!=(const const_iterator &) const;
 
 		const_iterator &operator++();
-		const const_iterator &operator++(int);
-		const const_iterator &operator+(const int &);
+		const_iterator operator++(int);
+		const_iterator operator+(const int &);
 
 		const_iterator &operator--();
-		const const_iterator &operator--(int);
-		const const_iterator &operator-(const int &);
+		const_iterator operator--(int);
+		const_iterator operator-(const int &);
 	};
 
 	LinkedList() : LinearList<elemType>() , head(new Node) , tail(head) , tot(0) {}
@@ -117,7 +117,7 @@ typename LinkedList<elemType>::iterator &LinkedList<elemType>::iterator::operato
 }
 
 template <class elemType>
-const typename LinkedList<elemType>::iterator &LinkedList<elemType>::iterator::operator++(int x)
+typename LinkedList<elemType>::iterator LinkedList<elemType>::iterator::operator++(int x)
 {
 	if (ptr -> succ == nullptr) throw(OutOfBound());
 	iterator tmp = *this;
@@ -126,7 +126,7 @@ const typename LinkedList<elemType>::iterator &LinkedList<elemType>::iterator::o
 }
 
 template <class elemType>
-const typename LinkedList<elemType>::iterator &LinkedList<elemType>::iterator::operator+(const int &x)
+typename LinkedList<elemType>::iterator LinkedList<elemType>::iterator::operator+(const int &x)
 {
 	if (x < 0) return operator-(-x);
 	iterator tmp = *this;
@@ -143,7 +143,7 @@ typename LinkedList<elemType>::iterator &LinkedList<elemType>::iterator::operato
 }
 
 template <class elemType>
-const typename LinkedList<elemType>::iterator &LinkedList<elemType>::iterator::operator--(int x)
+typename LinkedList<elemType>::iterator LinkedList<elemType>::iterator::operator--(int x)
 {
 	if (ptr -> prec == nullptr) throw(OutOfBound());
 	iterator tmp = *this;
@@ -152,7 +152,7 @@ const typename LinkedList<elemType>::iterator &LinkedList<elemType>::iterator::o
 }
 
 template <class elemType>
-const typename LinkedList<elemType>::iterator &LinkedList<elemType>::iterator::operator-(const int &x)
+typename LinkedList<elemType>::iterator LinkedList<elemType>::iterator::operator-(const int &x)
 {
 	if (x < 0) return operator+(-x);
 	iterator tmp = *this;
@@ -178,7 +178,7 @@ typename LinkedList<elemType>::const_iterator &LinkedList<elemType>::const_itera
 }
 
 template <class elemType>
-const typename LinkedList<elemType>::const_iterator &LinkedList<elemType>::const_iterator::operator++(int x)
+typename LinkedList<elemType>::const_iterator LinkedList<elemType>::const_iterator::operator++(int x)
 {
 	if (ptr -> succ == nullptr) throw(OutOfBound());
 	const_iterator tmp = *this;
@@ -187,7 +187,7 @@ const typename LinkedList<elemType>::const_iterator &LinkedList<elemType>::const
 }
 
 template <class elemType>
-const typename LinkedList<elemType>::const_iterator &LinkedList<elemType>::const_iterator::operator+(const int &x)
+typename LinkedList<elemType>::const_iterator LinkedList<elemType>::const_iterator::operator+(const int &x)
 {
 	if (x < 0) return operator-(-x);
 	const_iterator tmp = *this;
@@ -204,7 +204,7 @@ typename LinkedList<elemType>::const_iterator &LinkedList<elemType>::const_itera
 }
 
 template <class elemType>
-const typename LinkedList<elemType>::const_iterator &LinkedList<elemType>::const_iterator::operator--(int x)
+typename LinkedList<elemType>::const_iterator LinkedList<elemType>::const_iterator::operator--(int x)
 {
 	if (ptr -> prec == nullptr) throw(OutOfBound());
 	const_iterator tmp = *this;
@@ -213,7 +213,7 @@ const typename LinkedList<elemType>::const_iterator &LinkedList<elemType>::const
 }
 
 template <class elemType>
-const typename LinkedList<elemType>::const_iterator &LinkedList<elemType>::const_iterator::operator-(const int &x)
+typename LinkedList<elemType>::const_iterator LinkedList<elemType>::const_iterator::operator-(const int &x)
 {
 	if (x < 0) return operator+(-x);
 	const_iterator tmp = *this;

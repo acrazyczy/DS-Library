@@ -33,12 +33,12 @@ public:
 		bool operator!=(const iterator &) const;
 
 		iterator &operator++();
-		const iterator &operator++(int);
-		const iterator &operator+(const int &);
+		iterator operator++(int);
+		iterator operator+(const int &);
 
 		iterator &operator--();
-		const iterator &operator--(int);
-		const iterator &operator-(const int &);
+		iterator operator--(int);
+		iterator operator-(const int &);
 	};
 
 	class const_iterator
@@ -56,12 +56,12 @@ public:
 		bool operator!=(const const_iterator &) const;
 
 		const_iterator &operator++();
-		const const_iterator &operator++(int);
-		const const_iterator &operator+(const int &);
+		const_iterator operator++(int);
+		const_iterator operator+(const int &);
 
 		const_iterator &operator--();
-		const const_iterator &operator--(int);
-		const const_iterator &operator-(const int &);
+		const_iterator operator--(int);
+		const_iterator operator-(const int &);
 	};
 
 	Array() : LinearList<elemType>() , array(new elemType [1]) , maxsize(1) , tot(0) {}
@@ -118,19 +118,18 @@ typename Array<elemType>::iterator &Array<elemType>::iterator::operator++()
 }
 
 template <class elemType>
-const typename Array<elemType>::iterator &Array<elemType>::iterator::operator++(int x)
+typename Array<elemType>::iterator Array<elemType>::iterator::operator++(int x)
 {
-	static iterator tmp;
-	tmp = *this , ++ ptr;
+	iterator tmp = *this;
+	++ ptr;
 	return tmp;
 }
 
 template <class elemType>
-const typename Array<elemType>::iterator &Array<elemType>::iterator::operator+(const int &x)
+typename Array<elemType>::iterator Array<elemType>::iterator::operator+(const int &x)
 {
 	if (x < 0) return operator-(-x);
-	static iterator tmp;
-	tmp = *this;
+	iterator tmp = *this;
 	for (int i = 0;i < x;++ i) tmp = ++ tmp;
 	return tmp;
 }
@@ -143,19 +142,18 @@ typename Array<elemType>::iterator &Array<elemType>::iterator::operator--()
 }
 
 template <class elemType>
-const typename Array<elemType>::iterator &Array<elemType>::iterator::operator--(int x)
+typename Array<elemType>::iterator Array<elemType>::iterator::operator--(int x)
 {
-	static iterator tmp;
-	tmp = *this , -- ptr;
+	iterator tmp = *this;
+	-- ptr;
 	return tmp;
 }
 
 template <class elemType>
-const typename Array<elemType>::iterator &Array<elemType>::iterator::operator-(const int &x)
+typename Array<elemType>::iterator Array<elemType>::iterator::operator-(const int &x)
 {
 	if (x < 0) return operator+(-x);
-	static iterator tmp;
-	tmp = *this;
+	iterator tmp = *this;
 	for (int i = 0;i < x;++ i) -- tmp;
 	return tmp;
 }
@@ -180,19 +178,18 @@ typename Array<elemType>::const_iterator &Array<elemType>::const_iterator::opera
 }
 
 template <class elemType>
-const typename Array<elemType>::const_iterator &Array<elemType>::const_iterator::operator++(int x)
+typename Array<elemType>::const_iterator Array<elemType>::const_iterator::operator++(int x)
 {
-	static const_iterator tmp;
-	tmp = *this , ++ ptr;
+	const_iterator tmp = *this;
+	++ ptr;
 	return tmp;
 }
 
 template <class elemType>
-const typename Array<elemType>::const_iterator &Array<elemType>::const_iterator::operator+(const int &x)
+typename Array<elemType>::const_iterator Array<elemType>::const_iterator::operator+(const int &x)
 {
 	if (x < 0) return operator-(-x);
-	static const_iterator tmp;
-	tmp = *this;
+	const_iterator tmp = *this;
 	for (int i = 0;i < x;++ i) ++ tmp;
 	return tmp;
 }
@@ -205,19 +202,18 @@ typename Array<elemType>::const_iterator &Array<elemType>::const_iterator::opera
 }
 
 template <class elemType>
-const typename Array<elemType>::const_iterator &Array<elemType>::const_iterator::operator--(int x)
+typename Array<elemType>::const_iterator Array<elemType>::const_iterator::operator--(int x)
 {
-	static const_iterator tmp;
-	tmp = *this , -- ptr;
+	const_iterator tmp = *this;
+	-- ptr;
 	return tmp;
 }
 
 template <class elemType>
-const typename Array<elemType>::const_iterator &Array<elemType>::const_iterator::operator-(const int &x)
+typename Array<elemType>::const_iterator Array<elemType>::const_iterator::operator-(const int &x)
 {
 	if (x < 0) return operator+(-x);
-	static const_iterator tmp;
-	tmp = *this;
+	const_iterator tmp = *this;
 	for (int i = 0;i < x;++ i) -- tmp;
 	return tmp;
 }
