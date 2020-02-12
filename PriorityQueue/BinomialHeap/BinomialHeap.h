@@ -8,13 +8,13 @@
 #include "PriorityQueue.h"
 #include "LinkedList.h"
 
-template <class elemType , class compare = std::less<elemType> >
-class BinomialHeap : public PriorityQueue<elemType , compare>
+template <class valueType , class compare = std::less<valueType> >
+class BinomialHeap : public PriorityQueue<valueType , compare>
 {
 private:
 	struct Node
 	{
-		elemType val;
+		valueType val;
 		std::size_t depth;
 		LinkedList<Node *> dec;
 	};
@@ -30,32 +30,32 @@ public:
 	BinomialHeap() : tot(0) {};
 	BinomialHeap(Node *);
 	BinomialHeap(const BinomialHeap &);
-	BinomialHeap<elemType , compare> &operator=(const BinomialHeap<elemType , compare> &);
+	BinomialHeap<valueType , compare> &operator=(const BinomialHeap<valueType , compare> &);
 
 	virtual bool empty() const override;
 	virtual std::size_t size() const override;
 
-	virtual const elemType &top() const override;
-	virtual void push(const elemType &) override;
+	virtual const valueType &top() const override;
+	virtual void push(const valueType &) override;
 	virtual void pop() override;
 
-	void join(BinomialHeap<elemType , compare> &);
+	void join(BinomialHeap<valueType , compare> &);
 
 	virtual ~BinomialHeap();
 };
 
-template <class elemType , class compare>
-BinomialHeap<elemType , compare>::BinomialHeap(Node *root_) : tot(1) {root.push_back(root_);}
+template <class valueType , class compare>
+BinomialHeap<valueType , compare>::BinomialHeap(Node *root_) : tot(1) {root.push_back(root_);}
 
-template <class elemType , class compare>
-BinomialHeap<elemType , compare>::BinomialHeap(const BinomialHeap<elemType , compare> &rhs)
+template <class valueType , class compare>
+BinomialHeap<valueType , compare>::BinomialHeap(const BinomialHeap<valueType , compare> &rhs)
 {
 	for (typename LinkedList<Node *>::const_iterator it = rhs.root.cbegin();it != rhs.root.cend();++ it) root.push_back(copy(*it));
 	tot = rhs.tot;
 }
 
-template <class elemType , class compare>
-BinomialHeap<elemType , compare> &BinomialHeap<elemType , compare>::operator=(const BinomialHeap<elemType , compare> &rhs)
+template <class valueType , class compare>
+BinomialHeap<valueType , compare> &BinomialHeap<valueType , compare>::operator=(const BinomialHeap<valueType , compare> &rhs)
 {
 	if (this == &rhs) return *this;
 	clear();
@@ -64,46 +64,46 @@ BinomialHeap<elemType , compare> &BinomialHeap<elemType , compare>::operator=(co
 	return *this;
 }
 
-template <class elemType , class compare>
-bool BinomialHeap<elemType , compare>::empty() const {return !tot;}
+template <class valueType , class compare>
+bool BinomialHeap<valueType , compare>::empty() const {return !tot;}
 
-template <class elemType , class compare>
-std::size_t BinomialHeap<elemType , compare>::size() const {return tot;}
+template <class valueType , class compare>
+std::size_t BinomialHeap<valueType , compare>::size() const {return tot;}
 
-template <class elemType , class compare>
-const elemType &BinomialHeap<elemType , compare>::top() const
+template <class valueType , class compare>
+const valueType &BinomialHeap<valueType , compare>::top() const
 {
 	if (empty()) throw(OutOfBound());
-	elemType ret = root.front() -> val;typename LinkedList<Node *>::const_iterator rt = root.cbegin();
+	valueType ret = root.front() -> val;typename LinkedList<Node *>::const_iterator rt = root.cbegin();
 	for (typename LinkedList<Node *>::const_iterator it = root.cbegin();it != root.cend();++ it)
 		if (compare()(ret , (*it) -> val))
 			ret = (*it) -> val , rt = it;
 	return (*rt) -> val;
 }
 
-template <class elemType , class compare>
-void BinomialHeap<elemType , compare>::push(const elemType &val)
+template <class valueType , class compare>
+void BinomialHeap<valueType , compare>::push(const valueType &val)
 {
 	Node *node = new Node;node -> val = val , node -> depth = 0;
-	BinomialHeap<elemType , compare> tmp(node);
+	BinomialHeap<valueType , compare> tmp(node);
 	join(tmp);
 }
 
-template <class elemType , class compare>
-void BinomialHeap<elemType , compare>::pop()
+template <class valueType , class compare>
+void BinomialHeap<valueType , compare>::pop()
 {
 	if (empty()) throw(OutOfBound());
 	typename LinkedList<Node *>::const_iterator rt = root.cend();
 	for (typename LinkedList<Node *>::const_iterator it = root.cbegin();it != root.cend();++ it)
 		if (rt == root.cend() || compare()((*rt) -> val , (*it) -> val)) rt = it;
 	tot -= 1 << (*rt) -> depth;
-	BinomialHeap<elemType , compare> tmp;tmp.tot = (1 << (*rt) -> depth) - 1;
+	BinomialHeap<valueType , compare> tmp;tmp.tot = (1 << (*rt) -> depth) - 1;
 	for (typename LinkedList<Node *>::iterator it = (*rt) -> dec.begin();it != (*rt) -> dec.end();++ it) tmp.root.push_back(*it);
 	root.erase(rt) , join(tmp);
 }
 
-template <class elemType , class compare>
-void BinomialHeap<elemType , compare>::join(BinomialHeap<elemType , compare> &rhs)
+template <class valueType , class compare>
+void BinomialHeap<valueType , compare>::join(BinomialHeap<valueType , compare> &rhs)
 {
 	LinkedList<Node *> root_;
 	for (;!root.empty() || !rhs.root.empty();)
@@ -121,11 +121,11 @@ void BinomialHeap<elemType , compare>::join(BinomialHeap<elemType , compare> &rh
 	root = root_ , tot += rhs.tot , rhs.tot = 0;
 }
 
-template <class elemType , class compare>
-BinomialHeap<elemType , compare>::~BinomialHeap(){clear();}
+template <class valueType , class compare>
+BinomialHeap<valueType , compare>::~BinomialHeap(){clear();}
 
-template <class elemType , class compare>
-typename BinomialHeap<elemType , compare>::Node *BinomialHeap<elemType , compare>::merge(typename BinomialHeap<elemType , compare>::Node * const &lhs , typename BinomialHeap<elemType , compare>::Node * const &rhs)
+template <class valueType , class compare>
+typename BinomialHeap<valueType , compare>::Node *BinomialHeap<valueType , compare>::merge(typename BinomialHeap<valueType , compare>::Node * const &lhs , typename BinomialHeap<valueType , compare>::Node * const &rhs)
 {
 	if (compare()(lhs -> val , rhs -> val))
 	{
@@ -139,8 +139,8 @@ typename BinomialHeap<elemType , compare>::Node *BinomialHeap<elemType , compare
 	}
 }
 
-template <class elemType , class compare>
-typename BinomialHeap<elemType , compare>::Node *BinomialHeap<elemType , compare>::copy(const typename BinomialHeap<elemType , compare>::Node * const &rt)
+template <class valueType , class compare>
+typename BinomialHeap<valueType , compare>::Node *BinomialHeap<valueType , compare>::copy(const typename BinomialHeap<valueType , compare>::Node * const &rt)
 {
 	if (rt == nullptr) return nullptr;
 	Node *ret = new Node;ret -> val = rt -> val , ret -> depth = rt -> depth;
@@ -148,15 +148,15 @@ typename BinomialHeap<elemType , compare>::Node *BinomialHeap<elemType , compare
 	return ret;
 }
 
-template <class elemType , class compare>
-void BinomialHeap<elemType , compare>::clear(Node *&rt)
+template <class valueType , class compare>
+void BinomialHeap<valueType , compare>::clear(Node *&rt)
 {
 	for (typename LinkedList<Node *>::iterator it = rt -> dec.begin();it != rt -> dec.end();++ it) clear(*it);
 	delete rt , rt = nullptr;
 }
 
-template <class elemType , class compare>
-void BinomialHeap<elemType , compare>::clear()
+template <class valueType , class compare>
+void BinomialHeap<valueType , compare>::clear()
 {
 	for (typename LinkedList<Node *>::iterator it = root.begin();it != root.end();++ it) clear(*it);
 	root.resize(0) , tot = 0;

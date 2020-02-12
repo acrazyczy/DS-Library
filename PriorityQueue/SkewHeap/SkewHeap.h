@@ -8,14 +8,14 @@
 #include "PriorityQueue.h"
 #include <utility>
 
-template <class elemType , class compare = std::less<elemType> >
-class SkewHeap : public PriorityQueue<elemType , compare>
+template <class valueType , class compare = std::less<valueType> >
+class SkewHeap : public PriorityQueue<valueType , compare>
 {
 private:
 	struct Node
 	{
 		std::size_t tot;
-		elemType val;
+		valueType val;
 		Node *left , *right;
 	}*root;
 
@@ -24,69 +24,69 @@ private:
 	void clear(Node *&);
 public:
 	SkewHeap(Node *root_ = nullptr) : root(root_) {};
-	SkewHeap(const SkewHeap<elemType , compare> &);
-	SkewHeap<elemType , compare> &operator=(const SkewHeap<elemType , compare> &);
+	SkewHeap(const SkewHeap<valueType , compare> &);
+	SkewHeap<valueType , compare> &operator=(const SkewHeap<valueType , compare> &);
 
 	virtual bool empty() const override;
 	virtual std::size_t size() const override;
 
-	virtual const elemType &top() const override;
-	virtual void push(const elemType &) override;
+	virtual const valueType &top() const override;
+	virtual void push(const valueType &) override;
 	virtual void pop() override;
 
-	void join(SkewHeap<elemType , compare> &);
+	void join(SkewHeap<valueType , compare> &);
 
 	virtual ~SkewHeap();
 };
 
-template <class elemType , class compare>
-SkewHeap<elemType , compare>::SkewHeap(const SkewHeap<elemType , compare> &rhs){root = copy(rhs.root);}
+template <class valueType , class compare>
+SkewHeap<valueType , compare>::SkewHeap(const SkewHeap<valueType , compare> &rhs){root = copy(rhs.root);}
 
-template <class elemType , class compare>
-SkewHeap<elemType , compare> &SkewHeap<elemType , compare>::operator=(const SkewHeap<elemType , compare> &rhs)
+template <class valueType , class compare>
+SkewHeap<valueType , compare> &SkewHeap<valueType , compare>::operator=(const SkewHeap<valueType , compare> &rhs)
 {
 	if (this == &rhs) return *this;
 	clear(root) , root = copy(rhs.root);
 	return *this;
 }
 
-template <class elemType , class compare>
-bool SkewHeap<elemType , compare>::empty() const {return root == nullptr;}
+template <class valueType , class compare>
+bool SkewHeap<valueType , compare>::empty() const {return root == nullptr;}
 
-template <class elemType , class compare>
-std::size_t SkewHeap<elemType , compare>::size() const {return empty() ? 0 : root -> tot;}
+template <class valueType , class compare>
+std::size_t SkewHeap<valueType , compare>::size() const {return empty() ? 0 : root -> tot;}
 
-template <class elemType , class compare>
-const elemType &SkewHeap<elemType , compare>::top() const
+template <class valueType , class compare>
+const valueType &SkewHeap<valueType , compare>::top() const
 {
 	if (empty()) throw(OutOfBound());
 	return root -> val;
 }
 
-template <class elemType , class compare>
-void SkewHeap<elemType , compare>::push(const elemType &val)
+template <class valueType , class compare>
+void SkewHeap<valueType , compare>::push(const valueType &val)
 {
-	SkewHeap<elemType , compare> tmp(new Node);
+	SkewHeap<valueType , compare> tmp(new Node);
 	tmp.root -> tot = 1 , tmp.root -> val = val , tmp.root -> left = tmp.root -> right = nullptr;
 	join(tmp);
 }
 
-template <class elemType , class compare>
-void SkewHeap<elemType , compare>::pop()
+template <class valueType , class compare>
+void SkewHeap<valueType , compare>::pop()
 {
 	if (empty()) throw(OutOfBound());
-	SkewHeap<elemType , compare> lst(root -> left) , rst(root -> right);
+	SkewHeap<valueType , compare> lst(root -> left) , rst(root -> right);
 	delete root , lst.join(rst) , root = lst.root , lst.root = nullptr;
 }
 
-template <class elemType , class compare>
-void SkewHeap<elemType , compare>::join(SkewHeap<elemType , compare> &rhs){root = merge(root , rhs.root) , rhs.root = nullptr;}
+template <class valueType , class compare>
+void SkewHeap<valueType , compare>::join(SkewHeap<valueType , compare> &rhs){root = merge(root , rhs.root) , rhs.root = nullptr;}
 
-template <class elemType , class compare>
-SkewHeap<elemType , compare>::~SkewHeap(){clear(root);}
+template <class valueType , class compare>
+SkewHeap<valueType , compare>::~SkewHeap(){clear(root);}
 
-template <class elemType , class compare>
-typename SkewHeap<elemType , compare>::Node *SkewHeap<elemType , compare>::merge(typename SkewHeap<elemType , compare>::Node * const &lhs , typename SkewHeap<elemType , compare>::Node * const &rhs)
+template <class valueType , class compare>
+typename SkewHeap<valueType , compare>::Node *SkewHeap<valueType , compare>::merge(typename SkewHeap<valueType , compare>::Node * const &lhs , typename SkewHeap<valueType , compare>::Node * const &rhs)
 {
 	if (lhs == nullptr) return rhs;
 	if (rhs == nullptr) return lhs;
@@ -98,8 +98,8 @@ typename SkewHeap<elemType , compare>::Node *SkewHeap<elemType , compare>::merge
 	return rt;
 }
 
-template <class elemType , class compare>
-typename SkewHeap<elemType , compare>::Node *SkewHeap<elemType , compare>::copy(const typename SkewHeap<elemType , compare>::Node * const &rt)
+template <class valueType , class compare>
+typename SkewHeap<valueType , compare>::Node *SkewHeap<valueType , compare>::copy(const typename SkewHeap<valueType , compare>::Node * const &rt)
 {
 	if (rt == nullptr) return nullptr;
 	Node *ret = new Node;ret -> val = rt -> val , ret -> tot = rt -> tot;
@@ -107,8 +107,8 @@ typename SkewHeap<elemType , compare>::Node *SkewHeap<elemType , compare>::copy(
 	return ret;
 }
 
-template <class elemType , class compare>
-void SkewHeap<elemType , compare>::clear(SkewHeap<elemType , compare>::Node *&rt)
+template <class valueType , class compare>
+void SkewHeap<valueType , compare>::clear(SkewHeap<valueType , compare>::Node *&rt)
 {
 	if (rt == nullptr) return;
 	clear(rt -> left) , clear(rt -> right) , delete rt , rt = nullptr;

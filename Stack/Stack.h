@@ -7,42 +7,42 @@
 
 #include "Array.h"
 
-template <class elemType>
+template <class valueType>
 class Stack
 {
 private:
-	Array<elemType> list;
+	Array<valueType> list;
 public:
 	Stack() = default;
 
 	bool empty() const;
 	std::size_t size() const;
 
-	const elemType &top() const;
-	elemType &top();
+	const valueType &top() const;
+	valueType &top();
 
-	void push(const elemType &);
+	void push(const valueType &);
 	void pop();
 
 	virtual ~Stack() = default;
 };
 
-template <class elemType>
-bool Stack<elemType>::empty() const {return list.empty();}
+template <class valueType>
+bool Stack<valueType>::empty() const {return list.empty();}
 
-template <class elemType>
-std::size_t Stack<elemType>::size() const {return list.size();}
+template <class valueType>
+std::size_t Stack<valueType>::size() const {return list.size();}
 
-template <class elemType>
-const elemType &Stack<elemType>::top() const {return list.back();}
+template <class valueType>
+const valueType &Stack<valueType>::top() const {return list.back();}
 
-template <class elemType>
-elemType &Stack<elemType>::top(){return list.back();}
+template <class valueType>
+valueType &Stack<valueType>::top(){return list.back();}
 
-template <class elemType>
-void Stack<elemType>::push(const elemType &val){list.push_back(val);}
+template <class valueType>
+void Stack<valueType>::push(const valueType &val){list.push_back(val);}
 
-template <class elemType>
-void Stack<elemType>::pop(){list.pop_back();}
+template <class valueType>
+void Stack<valueType>::pop(){list.pop_back();}
 
 #endif //DSLIB_STACK_H

@@ -9,7 +9,7 @@
 #include <functional>
 #include <cstdlib>
 
-template <class elemType , class compare = std::less<elemType> >
+template <class valueType , class compare = std::less<valueType> >
 class PriorityQueue
 {
 public:
@@ -18,8 +18,8 @@ public:
 	virtual bool empty() const = 0;
 	virtual std::size_t size() const = 0;
 
-	virtual const elemType &top() const = 0;
-	virtual void push(const elemType &) = 0;
+	virtual const valueType &top() const = 0;
+	virtual void push(const valueType &) = 0;
 	virtual void pop() = 0;
 
 	virtual ~PriorityQueue() = default;

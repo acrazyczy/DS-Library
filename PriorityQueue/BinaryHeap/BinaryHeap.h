@@ -9,37 +9,37 @@
 #include "Array.h"
 #include <utility>
 
-template <class elemType , class compare = std::less<elemType> >
-class BinaryHeap : public PriorityQueue<elemType , compare>
+template <class valueType , class compare = std::less<valueType> >
+class BinaryHeap : public PriorityQueue<valueType , compare>
 {
 private:
-	Array<elemType> list;
+	Array<valueType> list;
 public:
 	BinaryHeap() = default;
 
 	virtual bool empty() const override;
 	virtual std::size_t size() const override;
 
-	virtual const elemType &top() const override;
-	virtual void push(const elemType &) override;
+	virtual const valueType &top() const override;
+	virtual void push(const valueType &) override;
 	virtual void pop() override;
 
-	void join(BinaryHeap<elemType , compare> &);
+	void join(BinaryHeap<valueType , compare> &);
 
 	virtual ~BinaryHeap() = default;
 };
 
-template <class elemType , class compare>
-bool BinaryHeap<elemType , compare>::empty() const {return list.empty();}
+template <class valueType , class compare>
+bool BinaryHeap<valueType , compare>::empty() const {return list.empty();}
 
-template <class elemType , class compare>
-std::size_t BinaryHeap<elemType , compare>::size() const {return list.size();}
+template <class valueType , class compare>
+std::size_t BinaryHeap<valueType , compare>::size() const {return list.size();}
 
-template <class elemType , class compare>
-const elemType &BinaryHeap<elemType , compare>::top() const {return list.front();}
+template <class valueType , class compare>
+const valueType &BinaryHeap<valueType , compare>::top() const {return list.front();}
 
-template <class elemType , class compare>
-void BinaryHeap<elemType , compare>::push(const elemType &val)
+template <class valueType , class compare>
+void BinaryHeap<valueType , compare>::push(const valueType &val)
 {
 	list.push_back(val);
 	std::size_t son = size() - 1;
@@ -51,8 +51,8 @@ void BinaryHeap<elemType , compare>::push(const elemType &val)
 	}
 }
 
-template <class elemType , class compare>
-void BinaryHeap<elemType , compare>::pop()
+template <class valueType , class compare>
+void BinaryHeap<valueType , compare>::pop()
 {
 	list.front() = list.back() , list.pop_back();
 	std::size_t fa = 0 , tot = size();
@@ -65,7 +65,7 @@ void BinaryHeap<elemType , compare>::pop()
 	}
 }
 
-template <class elemType , class compare>
-void BinaryHeap<elemType , compare>::join(BinaryHeap<elemType , compare> &rhs){for (;!rhs.empty();rhs.pop()) push(rhs.top());}
+template <class valueType , class compare>
+void BinaryHeap<valueType , compare>::join(BinaryHeap<valueType , compare> &rhs){for (;!rhs.empty();rhs.pop()) push(rhs.top());}
 
 #endif //DSLIB_BINARYHEAP_H

@@ -7,50 +7,50 @@
 
 #include "LinkedList.h"
 
-template <class elemType>
+template <class valueType>
 class Queue
 {
 private:
-	LinkedList<elemType> list;
+	LinkedList<valueType> list;
 public:
 	Queue() = default;
 
 	bool empty() const;
 	std::size_t size() const;
 
-	const elemType &front() const;
-	elemType &front();
-	const elemType &back() const;
-	elemType &back();
+	const valueType &front() const;
+	valueType &front();
+	const valueType &back() const;
+	valueType &back();
 
-	void push(const elemType &);
+	void push(const valueType &);
 	void pop();
 
 	virtual ~Queue() = default;
 };
 
-template <class elemType>
-bool Queue<elemType>::empty() const {return list.empty();}
+template <class valueType>
+bool Queue<valueType>::empty() const {return list.empty();}
 
-template <class elemType>
-std::size_t Queue<elemType>::size() const {return list.size();}
+template <class valueType>
+std::size_t Queue<valueType>::size() const {return list.size();}
 
-template <class elemType>
-const elemType &Queue<elemType>::front() const {return list.front();}
+template <class valueType>
+const valueType &Queue<valueType>::front() const {return list.front();}
 
-template <class elemType>
-elemType &Queue<elemType>::front(){return list.front();}
+template <class valueType>
+valueType &Queue<valueType>::front(){return list.front();}
 
-template <class elemType>
-const elemType &Queue<elemType>::back() const {return list.back();}
+template <class valueType>
+const valueType &Queue<valueType>::back() const {return list.back();}
 
-template <class elemType>
-elemType &Queue<elemType>::back(){return list.back();}
+template <class valueType>
+valueType &Queue<valueType>::back(){return list.back();}
 
-template <class elemType>
-void Queue<elemType>::push(const elemType &val){list.push_back(val);}
+template <class valueType>
+void Queue<valueType>::push(const valueType &val){list.push_back(val);}
 
-template <class elemType>
-void Queue<elemType>::pop(){list.pop_front();}
+template <class valueType>
+void Queue<valueType>::pop(){list.pop_front();}
 
 #endif //DSLIB_QUEUE_H

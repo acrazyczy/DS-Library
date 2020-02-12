@@ -6,9 +6,10 @@
 #define DSLIB_LINEARLIST_H
 
 #include "Exception.h"
+#include "Iterator.h"
 #include <cstdlib>
 
-template <class elemType>
+template <class valueType>
 class LinearList
 {
 public:
@@ -18,12 +19,12 @@ public:
 	virtual bool empty() const = 0;
 	virtual std::size_t size() const = 0;
 
-	virtual const elemType &front() const = 0;
-	virtual elemType &front() = 0;
-	virtual const elemType &operator[](const int &) const = 0;
-	virtual elemType &operator[](const int &) = 0;
-	virtual const elemType &back() const = 0;
-	virtual elemType &back() = 0;
+	virtual const valueType &front() const = 0;
+	virtual valueType &front() = 0;
+	virtual const valueType &operator[](const int &) const = 0;
+	virtual valueType &operator[](const int &) = 0;
+	virtual const valueType &back() const = 0;
+	virtual valueType &back() = 0;
 
 	virtual ~LinearList() = default;
 };

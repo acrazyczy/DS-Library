@@ -7,13 +7,13 @@
 
 #include "LinearList.h"
 
-template <class elemType>
-class LinkedList : public LinearList<elemType>
+template <class valueType>
+class LinkedList : public LinearList<valueType>
 {
 private:
 	struct Node
 	{
-		elemType val;
+		valueType val;
 		Node *prec , *succ;
 
 		Node() : val() , prec(nullptr) , succ(nullptr) {};
@@ -23,13 +23,16 @@ private:
 public:
 	class iterator
 	{
-		friend class LinkedList<elemType>;
+		friend class LinkedList<valueType>;
 	private:
 		Node *ptr;
 	public:
+		typedef valueType _valueType;
+		typedef Node * _ptrType;
+
 		explicit iterator(Node *ptr_ = nullptr) : ptr(ptr_) {}
 
-		elemType &operator*() const;
+		valueType &operator*() const;
 		bool operator==(const iterator &) const;
 		bool operator!=(const iterator &) const;
 
@@ -42,44 +45,25 @@ public:
 		iterator operator-(const int &);
 	};
 
-	class const_iterator
-	{
-		friend class LinkedList<elemType>;
-	private:
-		Node *ptr;
-	public:
-		explicit const_iterator(Node *ptr_ = nullptr) : ptr(ptr_) {}
+	typedef Const_Iterator<iterator> const_iterator;
 
-		const elemType &operator*() const;
-		bool operator==(const const_iterator &) const;
-		bool operator!=(const const_iterator &) const;
-
-		const_iterator &operator++();
-		const_iterator operator++(int);
-		const_iterator operator+(const int &);
-
-		const_iterator &operator--();
-		const_iterator operator--(int);
-		const_iterator operator-(const int &);
-	};
-
-	LinkedList() : LinearList<elemType>() , head(new Node) , tail(head) , tot(0) {}
-	LinkedList(const LinkedList<elemType> &);
-	LinkedList<elemType> &operator=(const LinkedList<elemType> &);
+	LinkedList() : LinearList<valueType>() , head(new Node) , tail(head) , tot(0) {}
+	LinkedList(const LinkedList<valueType> &);
+	LinkedList<valueType> &operator=(const LinkedList<valueType> &);
 
 	virtual void clear() override;
 	virtual bool empty() const override;
 	void resize(std::size_t);
-	void resize(std::size_t , const elemType &);
+	void resize(std::size_t , const valueType &);
 	virtual std::size_t size() const override;
-	iterator insert(const_iterator , const elemType &);
+	iterator insert(const_iterator , const valueType &);
 	iterator erase(const_iterator);
-	const_iterator find(const elemType &) const;
-	iterator find(const elemType &);
+	const_iterator find(const valueType &) const;
+	iterator find(const valueType &);
 
-	void push_front(const elemType &);
+	void push_front(const valueType &);
 	void pop_front();
-	void push_back(const elemType &);
+	void push_back(const valueType &);
 	void pop_back();
 
 	const_iterator cbegin() const;
@@ -87,37 +71,37 @@ public:
 	const_iterator cend() const;
 	iterator end();
 
-	virtual const elemType &front() const override;
-	virtual elemType &front() override;
-	virtual const elemType &operator[](const int &) const override;
-	virtual elemType &operator[](const int &) override;
-	virtual const elemType &back() const override;
-	virtual elemType &back() override;
+	virtual const valueType &front() const override;
+	virtual valueType &front() override;
+	virtual const valueType &operator[](const int &) const override;
+	virtual valueType &operator[](const int &) override;
+	virtual const valueType &back() const override;
+	virtual valueType &back() override;
 
-	void merge(LinkedList<elemType> &);
+	void merge(LinkedList<valueType> &);
 
 	virtual ~LinkedList();
 };
 
-template <class elemType>
-elemType &LinkedList<elemType>::iterator::operator*() const {return ptr -> val;}
+template <class valueType>
+valueType &LinkedList<valueType>::iterator::operator*() const {return ptr -> val;}
 
-template <class elemType>
-bool LinkedList<elemType>::iterator::operator==(const iterator &it) const {return ptr == it.ptr;}
+template <class valueType>
+bool LinkedList<valueType>::iterator::operator==(const iterator &it) const {return ptr == it.ptr;}
 
-template <class elemType>
-bool LinkedList<elemType>::iterator::operator!=(const iterator &it) const {return ptr != it.ptr;}
+template <class valueType>
+bool LinkedList<valueType>::iterator::operator!=(const iterator &it) const {return ptr != it.ptr;}
 
-template <class elemType>
-typename LinkedList<elemType>::iterator &LinkedList<elemType>::iterator::operator++()
+template <class valueType>
+typename LinkedList<valueType>::iterator &LinkedList<valueType>::iterator::operator++()
 {
 	if (ptr -> succ == nullptr) throw(OutOfBound());
 	ptr = ptr -> succ;
 	return *this;
 }
 
-template <class elemType>
-typename LinkedList<elemType>::iterator LinkedList<elemType>::iterator::operator++(int x)
+template <class valueType>
+typename LinkedList<valueType>::iterator LinkedList<valueType>::iterator::operator++(int x)
 {
 	if (ptr -> succ == nullptr) throw(OutOfBound());
 	iterator tmp = *this;
@@ -125,8 +109,8 @@ typename LinkedList<elemType>::iterator LinkedList<elemType>::iterator::operator
 	return tmp;
 }
 
-template <class elemType>
-typename LinkedList<elemType>::iterator LinkedList<elemType>::iterator::operator+(const int &x)
+template <class valueType>
+typename LinkedList<valueType>::iterator LinkedList<valueType>::iterator::operator+(const int &x)
 {
 	if (x < 0) return operator-(-x);
 	iterator tmp = *this;
@@ -134,16 +118,16 @@ typename LinkedList<elemType>::iterator LinkedList<elemType>::iterator::operator
 	return tmp;
 }
 
-template <class elemType>
-typename LinkedList<elemType>::iterator &LinkedList<elemType>::iterator::operator--()
+template <class valueType>
+typename LinkedList<valueType>::iterator &LinkedList<valueType>::iterator::operator--()
 {
 	if (ptr -> prec == nullptr) throw(OutOfBound());
 	ptr = ptr -> prec;
 	return *this;
 }
 
-template <class elemType>
-typename LinkedList<elemType>::iterator LinkedList<elemType>::iterator::operator--(int x)
+template <class valueType>
+typename LinkedList<valueType>::iterator LinkedList<valueType>::iterator::operator--(int x)
 {
 	if (ptr -> prec == nullptr) throw(OutOfBound());
 	iterator tmp = *this;
@@ -151,8 +135,8 @@ typename LinkedList<elemType>::iterator LinkedList<elemType>::iterator::operator
 	return tmp;
 }
 
-template <class elemType>
-typename LinkedList<elemType>::iterator LinkedList<elemType>::iterator::operator-(const int &x)
+template <class valueType>
+typename LinkedList<valueType>::iterator LinkedList<valueType>::iterator::operator-(const int &x)
 {
 	if (x < 0) return operator+(-x);
 	iterator tmp = *this;
@@ -160,69 +144,8 @@ typename LinkedList<elemType>::iterator LinkedList<elemType>::iterator::operator
 	return tmp;
 }
 
-template <class elemType>
-const elemType &LinkedList<elemType>::const_iterator::operator*() const {return ptr -> val;}
-
-template <class elemType>
-bool LinkedList<elemType>::const_iterator::operator==(const const_iterator &it) const {return ptr == it.ptr;}
-
-template <class elemType>
-bool LinkedList<elemType>::const_iterator::operator!=(const const_iterator &it) const {return ptr != it.ptr;}
-
-template <class elemType>
-typename LinkedList<elemType>::const_iterator &LinkedList<elemType>::const_iterator::operator++()
-{
-	if (ptr -> succ == nullptr) throw(OutOfBound());
-	ptr = ptr -> succ;
-	return *this;
-}
-
-template <class elemType>
-typename LinkedList<elemType>::const_iterator LinkedList<elemType>::const_iterator::operator++(int x)
-{
-	if (ptr -> succ == nullptr) throw(OutOfBound());
-	const_iterator tmp = *this;
-	ptr = ptr -> succ;
-	return tmp;
-}
-
-template <class elemType>
-typename LinkedList<elemType>::const_iterator LinkedList<elemType>::const_iterator::operator+(const int &x)
-{
-	if (x < 0) return operator-(-x);
-	const_iterator tmp = *this;
-	for (int i = 0;i < x;++ i) ++ tmp;
-	return tmp;
-}
-
-template <class elemType>
-typename LinkedList<elemType>::const_iterator &LinkedList<elemType>::const_iterator::operator--()
-{
-	if (ptr -> prec == nullptr) throw(OutOfBound());
-	ptr = ptr -> prec;
-	return *this;
-}
-
-template <class elemType>
-typename LinkedList<elemType>::const_iterator LinkedList<elemType>::const_iterator::operator--(int x)
-{
-	if (ptr -> prec == nullptr) throw(OutOfBound());
-	const_iterator tmp = *this;
-	ptr = ptr -> prec;
-	return tmp;
-}
-
-template <class elemType>
-typename LinkedList<elemType>::const_iterator LinkedList<elemType>::const_iterator::operator-(const int &x)
-{
-	if (x < 0) return operator+(-x);
-	const_iterator tmp = *this;
-	for (int i = 0;i < x;++ i) -- tmp;
-	return tmp;
-}
-
-template <class elemType>
-LinkedList<elemType>::LinkedList(const LinkedList<elemType> &rhs)
+template <class valueType>
+LinkedList<valueType>::LinkedList(const LinkedList<valueType> &rhs)
 {
 	tot = rhs.tot , head = nullptr , tail = nullptr;
 	for (const_iterator it = rhs.cbegin();it != rhs.cend();++ it)
@@ -239,8 +162,8 @@ LinkedList<elemType>::LinkedList(const LinkedList<elemType> &rhs)
 	node -> prec = tail , tail = node;
 }
 
-template <class elemType>
-LinkedList<elemType> &LinkedList<elemType>::operator=(const LinkedList<elemType> &rhs)
+template <class valueType>
+LinkedList<valueType> &LinkedList<valueType>::operator=(const LinkedList<valueType> &rhs)
 {
 	if (this == &rhs) return *this;
 	clear();
@@ -260,27 +183,27 @@ LinkedList<elemType> &LinkedList<elemType>::operator=(const LinkedList<elemType>
 	return *this;
 }
 
-template <class elemType>
-void LinkedList<elemType>::clear()
+template <class valueType>
+void LinkedList<valueType>::clear()
 {
 	for (Node *ptr = head , *nxt;head != nullptr;head = nxt) nxt = head -> succ , delete head;
 	tot = 0 , head = tail = new Node;
 }
 
-template <class elemType>
-bool LinkedList<elemType>::empty() const {return !tot;}
+template <class valueType>
+bool LinkedList<valueType>::empty() const {return !tot;}
 
-template <class elemType>
-void LinkedList<elemType>::resize(std::size_t n)
+template <class valueType>
+void LinkedList<valueType>::resize(std::size_t n)
 {
 	LinkedList tmp;const_iterator it = cbegin();
 	for (std::size_t i = 0;i < n && i < tot;++ i , ++ it) tmp.push_back(*it);
-	for (std::size_t i = tot;i < n;++ i) tmp.push_back(elemType());
+	for (std::size_t i = tot;i < n;++ i) tmp.push_back(valueType());
 	operator=(tmp);
 }
 
-template <class elemType>
-void LinkedList<elemType>::resize(std::size_t n , const elemType &val)
+template <class valueType>
+void LinkedList<valueType>::resize(std::size_t n , const valueType &val)
 {
 	LinkedList tmp;const_iterator it = begin();
 	for (std::size_t i = 0;i < n && i < tot;++ i , ++ it) tmp.push_back(*it);
@@ -288,11 +211,11 @@ void LinkedList<elemType>::resize(std::size_t n , const elemType &val)
 	operator=(tmp);
 }
 
-template <class elemType>
-std::size_t LinkedList<elemType>::size() const {return tot;}
+template <class valueType>
+std::size_t LinkedList<valueType>::size() const {return tot;}
 
-template <class elemType>
-typename LinkedList<elemType>::iterator LinkedList<elemType>::insert(typename LinkedList<elemType>::const_iterator pos , const elemType &val)
+template <class valueType>
+typename LinkedList<valueType>::iterator LinkedList<valueType>::insert(typename LinkedList<valueType>::const_iterator pos , const valueType &val)
 {
 	Node *ptr = new Node;ptr -> val = val , ++ tot;
 	ptr -> prec = pos.ptr -> prec;
@@ -302,8 +225,8 @@ typename LinkedList<elemType>::iterator LinkedList<elemType>::insert(typename Li
 	return iterator(ptr);
 }
 
-template <class elemType>
-typename LinkedList<elemType>::iterator LinkedList<elemType>::erase(typename LinkedList<elemType>::const_iterator pos)
+template <class valueType>
+typename LinkedList<valueType>::iterator LinkedList<valueType>::erase(typename LinkedList<valueType>::const_iterator pos)
 {
 	if (pos.ptr == tail) throw(OutOfBound());
 	iterator ret(pos.ptr -> succ);
@@ -314,52 +237,52 @@ typename LinkedList<elemType>::iterator LinkedList<elemType>::erase(typename Lin
 	return ret;
 }
 
-template <class elemType>
-typename LinkedList<elemType>::const_iterator LinkedList<elemType>::find(const elemType &val) const
+template <class valueType>
+typename LinkedList<valueType>::const_iterator LinkedList<valueType>::find(const valueType &val) const
 {
 	const_iterator it = cbegin();
 	for (;it != cend() && *it != val;++ it);
 	return it;
 }
 
-template <class elemType>
-typename LinkedList<elemType>::iterator LinkedList<elemType>::find(const elemType &val)
+template <class valueType>
+typename LinkedList<valueType>::iterator LinkedList<valueType>::find(const valueType &val)
 {
-	return iterator(static_cast<const LinkedList<elemType> &>(*this).find(val).ptr);
+	return iterator(static_cast<const LinkedList<valueType> &>(*this).find(val).ptr);
 }
 
-template <class elemType>
-void LinkedList<elemType>::push_front(const elemType &val){insert(cbegin() , val);}
+template <class valueType>
+void LinkedList<valueType>::push_front(const valueType &val){insert(cbegin() , val);}
 
-template <class elemType>
-void LinkedList<elemType>::pop_front(){erase(cbegin());}
+template <class valueType>
+void LinkedList<valueType>::pop_front(){erase(cbegin());}
 
-template <class elemType>
-void LinkedList<elemType>::push_back(const elemType &val){insert(cend() , val);}
+template <class valueType>
+void LinkedList<valueType>::push_back(const valueType &val){insert(cend() , val);}
 
-template <class elemType>
-void LinkedList<elemType>::pop_back(){erase(-- cend());}
+template <class valueType>
+void LinkedList<valueType>::pop_back(){erase(-- cend());}
 
-template <class elemType>
-typename LinkedList<elemType>::const_iterator LinkedList<elemType>::cbegin() const {return const_iterator(head);}
+template <class valueType>
+typename LinkedList<valueType>::const_iterator LinkedList<valueType>::cbegin() const {return const_iterator(head);}
 
-template <class elemType>
-typename LinkedList<elemType>::iterator LinkedList<elemType>::begin(){return iterator(head);}
+template <class valueType>
+typename LinkedList<valueType>::iterator LinkedList<valueType>::begin(){return iterator(head);}
 
-template <class elemType>
-typename LinkedList<elemType>::const_iterator LinkedList<elemType>::cend() const {return const_iterator(tail);}
+template <class valueType>
+typename LinkedList<valueType>::const_iterator LinkedList<valueType>::cend() const {return const_iterator(tail);}
 
-template <class elemType>
-typename LinkedList<elemType>::iterator LinkedList<elemType>::end(){return iterator(tail);}
+template <class valueType>
+typename LinkedList<valueType>::iterator LinkedList<valueType>::end(){return iterator(tail);}
 
-template <class elemType>
-const elemType &LinkedList<elemType>::front() const {return *cbegin();}
+template <class valueType>
+const valueType &LinkedList<valueType>::front() const {return *cbegin();}
 
-template <class elemType>
-elemType &LinkedList<elemType>::front(){return *begin();}
+template <class valueType>
+valueType &LinkedList<valueType>::front(){return *begin();}
 
-template <class elemType>
-const elemType &LinkedList<elemType>::operator[](const int &pos) const
+template <class valueType>
+const valueType &LinkedList<valueType>::operator[](const int &pos) const
 {
 	if (pos < 0 || pos >= tot) throw(OutOfBound());
 	const_iterator it = cbegin();
@@ -367,27 +290,27 @@ const elemType &LinkedList<elemType>::operator[](const int &pos) const
 	return *it;
 }
 
-template <class elemType>
-elemType &LinkedList<elemType>::operator[](const int &pos)
+template <class valueType>
+valueType &LinkedList<valueType>::operator[](const int &pos)
 {
-	return const_cast<elemType &>(static_cast<const LinkedList<elemType> &>(*this)[pos]);
+	return const_cast<valueType &>(static_cast<const LinkedList<valueType> &>(*this)[pos]);
 }
 
-template <class elemType>
-const elemType &LinkedList<elemType>::back() const {return *(-- cend());}
+template <class valueType>
+const valueType &LinkedList<valueType>::back() const {return *(-- cend());}
 
-template <class elemType>
-elemType &LinkedList<elemType>::back() {return *(-- end());}
+template <class valueType>
+valueType &LinkedList<valueType>::back() {return *(-- end());}
 
-template <class elemType>
-void LinkedList<elemType>::merge(LinkedList<elemType> &rhs)
+template <class valueType>
+void LinkedList<valueType>::merge(LinkedList<valueType> &rhs)
 {
 	if (tail -> prec == nullptr) head = rhs.head;
 	else tail -> prec -> succ = rhs.head;
 	rhs.head = tail , tail = rhs.tail , rhs.tail = rhs.head , tot += rhs.tot , rhs.tot = 0;
 }
 
-template <class elemType>
-LinkedList<elemType>::~LinkedList(){clear() , delete head;}
+template <class valueType>
+LinkedList<valueType>::~LinkedList(){clear() , delete head;}
 
 #endif //DSLIB_LINKEDLIST_H
