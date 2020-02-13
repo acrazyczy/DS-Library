@@ -1,5 +1,7 @@
-#include "BinomialHeap.h"
+#include "AVLTree.h"
+#include "Array.h"
 #include <functional>
+#include <algorithm>
 #include <iostream>
 #include <cstdlib>
 #include <fstream>
@@ -76,7 +78,7 @@ int main()
 
 	std::srand(std::time(0));
 
-	BinomialHeap<int> ltree , ltree_ , ltree__;
+	/*BinomialHeap<int> ltree , ltree_ , ltree__;
 	std::ifstream in("data.in");
 	for (int x;in >> x;) ltree.push(x);
 	in.close();
@@ -90,6 +92,21 @@ int main()
 	for (int i = 0;i < 30;++ i) ltree.push(rand() % 1000);
 	for (;!ltree.empty();ltree.pop()) out << ltree.top() << " ";
 	out << std::endl;
-	out.close();
+	out.close();*/
+
+	AVLTree<int , int , std::greater<int> > bst;Array<int> list;
+	std::ifstream in("data.in");
+	for (int x;in >> x;) list.push_back(x);
+	in.close();
+	std::ofstream out("data.out");
+	std::random_shuffle(list.begin() , list.end());
+	for (auto x : list) out << x << " ";
+	out << std::endl;
+	for (Array<int>::const_iterator it = list.cbegin();it != list.cend();++ it) bst.insert(*it , *it);
+	AVLTree<int , int , std::greater<int> > c_bst(bst);
+	for (AVLTree<int , int , std::greater<int> >::const_iterator it = c_bst.cbegin();it != c_bst.cend();++ it) out << *it << " ";
+	bst.erase(12) , bst.erase(15) , bst.erase(20) , bst.erase(69) , bst.erase(70);
+	for (AVLTree<int , int , std::greater<int> >::const_iterator it = bst.cbegin();it != bst.cend();++ it) out << *it << " ";
+	out << std::endl;
 	return 0;
 }
