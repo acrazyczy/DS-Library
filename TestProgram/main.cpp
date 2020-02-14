@@ -99,14 +99,26 @@ int main()
 	for (int x;in >> x;) list.push_back(x);
 	in.close();
 	std::ofstream out("data.out");
-	std::random_shuffle(list.begin() , list.end());
+	//std::random_shuffle(list.begin() , list.end());
 	for (auto x : list) out << x << " ";
 	out << std::endl;
 	for (Array<int>::const_iterator it = list.cbegin();it != list.cend();++ it) bst.insert(*it , *it);
 	AVLTree<int , int , std::greater<int> > c_bst(bst);
 	for (AVLTree<int , int , std::greater<int> >::const_iterator it = c_bst.cbegin();it != c_bst.cend();++ it) out << *it << " ";
+	out << std::endl;
 	bst.erase(12) , bst.erase(15) , bst.erase(20) , bst.erase(69) , bst.erase(70);
 	for (AVLTree<int , int , std::greater<int> >::const_iterator it = bst.cbegin();it != bst.cend();++ it) out << *it << " ";
+	std::cerr << bst.erase(15) << std::endl;
+	out << std::endl;
+	bst.erase(54) , bst.erase(63) , bst.erase(25) , bst.erase(2) , bst.erase(35);
+	for (AVLTree<int , int , std::greater<int> >::const_iterator it = bst.cbegin();it != bst.cend();++ it) out << *it << " ";
+	out << std::endl;
+	out << bst.size() << std::endl;
+	bst.clear() , list.clear();
+	for (int i = 0;i < 1000;++ i) list.push_back(i);
+	std::random_shuffle(list.begin() , list.end());
+	for (Array<int>::const_iterator it = list.cbegin();it != list.cend();++ it) bst.insert(*it , *it);
+	for (auto x : bst) out << x << " ";
 	out << std::endl;
 	return 0;
 }

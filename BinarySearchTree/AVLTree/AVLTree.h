@@ -300,6 +300,8 @@ typename AVLTree<keyType , valueType , compare>::Node *AVLTree<keyType , valueTy
 template <class keyType , class valueType , class compare>
 void AVLTree<keyType , valueType , compare>::erase(typename AVLTree<keyType , valueType , compare>::Node *&rt , const keyType &key)
 {
+	keyType _key = rt -> key , aim_key = key;
+	valueType _value = rt -> value;
 	if (rt -> key == key)
 		if (rt -> son[0] == nullptr || rt -> son[1] == nullptr)
 		{
@@ -311,12 +313,12 @@ void AVLTree<keyType , valueType , compare>::erase(typename AVLTree<keyType , va
 		{
 			Node *rp = rt -> son[1];
 			for (;rp -> son[0] != nullptr;rp = rp -> son[0]);
-			keyType _key = rp -> key;valueType _value = rp -> value;
-			erase(rt -> son[compare()(rt -> key , _key)] , _key);
-			rt -> son[compare()(rt -> key , _key)] -> parent = rt , rt -> key = _key , rt -> value = _value;
-			update(rt) , maintain(rt);
+			aim_key = _key = rp -> key , _value = rp -> value;
 		}
-	erase(rt -> son[compare()(rt -> key , key)] , key) , rt -> son[compare()(rt -> key , key)] -> parent = rt , update(rt) , maintain(rt);
+	erase(rt -> son[compare()(rt -> key , aim_key)] , aim_key);
+	if (rt -> son[compare()(rt -> key , aim_key)] != nullptr) rt -> son[compare()(rt -> key , aim_key)] -> parent = rt;
+	rt -> key = _key , rt -> value = _value;
+	update(rt) , maintain(rt);
 }
 
 template <class keyType , class valueType , class compare>
