@@ -103,7 +103,7 @@ int main()
 	for (auto x : list) out << x << " ";
 	out << std::endl;
 	for (Array<int>::const_iterator it = list.cbegin();it != list.cend();++ it) bst.insert(*it , *it);
-	AVLTree<int , int , std::greater<int> > c_bst(bst);
+	const AVLTree<int , int , std::greater<int> > c_bst(bst);
 	for (AVLTree<int , int , std::greater<int> >::const_iterator it = c_bst.cbegin();it != c_bst.cend();++ it) out << *it << " ";
 	out << std::endl;
 	bst.erase(12) , bst.erase(15) , bst.erase(20) , bst.erase(69) , bst.erase(70);
@@ -117,8 +117,10 @@ int main()
 	bst.clear() , list.clear();
 	for (int i = 0;i < 1000;++ i) list.push_back(i);
 	std::random_shuffle(list.begin() , list.end());
-	for (Array<int>::const_iterator it = list.cbegin();it != list.cend();++ it) bst.insert(*it , *it);
+	for (Array<int>::const_reverse_iterator it = list.crbegin();it != list.crend();++ it) bst.insert(*it , *it);
 	for (auto x : bst) out << x << " ";
+	out << std::endl;
+	for (AVLTree<int , int , std::greater<int> >::reverse_iterator it = bst.rbegin();it != bst.rend();++ it) out << *it << " ";
 	out << std::endl;
 	return 0;
 }

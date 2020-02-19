@@ -38,14 +38,16 @@ public:
 
 		iterator &operator++();
 		iterator operator++(int);
-		iterator operator+(const int &);
+		iterator operator+(const int &) const;
 
 		iterator &operator--();
 		iterator operator--(int);
-		iterator operator-(const int &);
+		iterator operator-(const int &) const;
 	};
 
 	typedef Const_Iterator<iterator> const_iterator;
+	typedef Reverse_Iterator<iterator> reverse_iterator;
+	typedef Const_Reverse_Iterator<iterator> const_reverse_iterator;
 
 	LinkedList() : LinearList<valueType>() , head(new Node) , tail(head) , tot(0) {}
 	LinkedList(const LinkedList<valueType> &);
@@ -68,8 +70,12 @@ public:
 
 	const_iterator cbegin() const;
 	iterator begin();
+	const_reverse_iterator crbegin() const;
+	reverse_iterator rbegin();
 	const_iterator cend() const;
 	iterator end();
+	const_reverse_iterator crend() const;
+	reverse_iterator rend();
 
 	virtual const valueType &front() const override;
 	virtual valueType &front() override;
@@ -110,7 +116,7 @@ typename LinkedList<valueType>::iterator LinkedList<valueType>::iterator::operat
 }
 
 template <class valueType>
-typename LinkedList<valueType>::iterator LinkedList<valueType>::iterator::operator+(const int &x)
+typename LinkedList<valueType>::iterator LinkedList<valueType>::iterator::operator+(const int &x) const
 {
 	if (x < 0) return operator-(-x);
 	iterator tmp = *this;
@@ -136,7 +142,7 @@ typename LinkedList<valueType>::iterator LinkedList<valueType>::iterator::operat
 }
 
 template <class valueType>
-typename LinkedList<valueType>::iterator LinkedList<valueType>::iterator::operator-(const int &x)
+typename LinkedList<valueType>::iterator LinkedList<valueType>::iterator::operator-(const int &x) const
 {
 	if (x < 0) return operator+(-x);
 	iterator tmp = *this;
@@ -270,10 +276,22 @@ template <class valueType>
 typename LinkedList<valueType>::iterator LinkedList<valueType>::begin(){return iterator(head);}
 
 template <class valueType>
+typename LinkedList<valueType>::const_iterator LinkedList<valueType>::crbegin() const {return const_reverse_iterator(tail);}
+
+template <class valueType>
+typename LinkedList<valueType>::iterator LinkedList<valueType>::rend(){return reverse_iterator(tail);}
+
+template <class valueType>
 typename LinkedList<valueType>::const_iterator LinkedList<valueType>::cend() const {return const_iterator(tail);}
 
 template <class valueType>
 typename LinkedList<valueType>::iterator LinkedList<valueType>::end(){return iterator(tail);}
+
+template <class valueType>
+typename LinkedList<valueType>::const_iterator LinkedList<valueType>::crend() const {return const_reverse_iterator(head);}
+
+template <class valueType>
+typename LinkedList<valueType>::iterator LinkedList<valueType>::rend(){return reverse_iterator(head);}
 
 template <class valueType>
 const valueType &LinkedList<valueType>::front() const {return *cbegin();}
@@ -297,10 +315,10 @@ valueType &LinkedList<valueType>::operator[](const int &pos)
 }
 
 template <class valueType>
-const valueType &LinkedList<valueType>::back() const {return *(-- cend());}
+const valueType &LinkedList<valueType>::back() const {return *crbegin();}
 
 template <class valueType>
-valueType &LinkedList<valueType>::back() {return *(-- end());}
+valueType &LinkedList<valueType>::back() {return *rbegin();}
 
 template <class valueType>
 void LinkedList<valueType>::merge(LinkedList<valueType> &rhs)

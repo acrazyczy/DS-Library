@@ -34,14 +34,16 @@ public:
 
 		iterator &operator++();
 		iterator operator++(int);
-		iterator operator+(const int &);
+		iterator operator+(const int &) const;
 
 		iterator &operator--();
 		iterator operator--(int);
-		iterator operator-(const int &);
+		iterator operator-(const int &) const;
 	};
 
 	typedef Const_Iterator<iterator> const_iterator;
+	typedef Reverse_Iterator<iterator> reverse_iterator;
+	typedef Const_Reverse_Iterator<iterator> const_reverse_iterator;
 
 	Array() : LinearList<valueType>() , array(new valueType [1]) , maxsize(1) , tot(0) {}
 	Array(const Array<valueType> &);
@@ -64,8 +66,12 @@ public:
 
 	const_iterator cbegin() const;
 	iterator begin();
+	const_reverse_iterator crbegin() const;
+	reverse_iterator rbegin();
 	const_iterator cend() const;
 	iterator end();
+	const_reverse_iterator crend() const;
+	reverse_iterator rend();
 
 	virtual const valueType &front() const override;
 	virtual valueType &front() override;
@@ -105,7 +111,7 @@ typename Array<valueType>::iterator Array<valueType>::iterator::operator++(int x
 }
 
 template <class valueType>
-typename Array<valueType>::iterator Array<valueType>::iterator::operator+(const int &x)
+typename Array<valueType>::iterator Array<valueType>::iterator::operator+(const int &x) const
 {
 	if (x < 0) return operator-(-x);
 	iterator tmp = *this;
@@ -129,7 +135,7 @@ typename Array<valueType>::iterator Array<valueType>::iterator::operator--(int x
 }
 
 template <class valueType>
-typename Array<valueType>::iterator Array<valueType>::iterator::operator-(const int &x)
+typename Array<valueType>::iterator Array<valueType>::iterator::operator-(const int &x) const
 {
 	if (x < 0) return operator+(-x);
 	iterator tmp = *this;
@@ -249,10 +255,22 @@ template <class valueType>
 typename Array<valueType>::iterator Array<valueType>::begin(){return iterator(array);}
 
 template <class valueType>
+typename Array<valueType>::const_reverse_iterator Array<valueType>::crbegin() const {return const_reverse_iterator(array + tot);}
+
+template <class valueType>
+typename Array<valueType>::reverse_iterator Array<valueType>::rbegin(){return reverse_iterator(array + tot);}
+
+template <class valueType>
 typename Array<valueType>::const_iterator Array<valueType>::cend() const {return const_iterator(array + tot);}
 
 template <class valueType>
 typename Array<valueType>::iterator Array<valueType>::end(){return iterator(array + tot);}
+
+template <class valueType>
+typename Array<valueType>::const_reverse_iterator Array<valueType>::crend() const {return const_reverse_iterator(array);}
+
+template <class valueType>
+typename Array<valueType>::reverse_iterator Array<valueType>::rend(){return reverse_iterator(array);}
 
 template <class valueType>
 const valueType &Array<valueType>::front() const {return *cbegin();}
@@ -274,10 +292,10 @@ valueType &Array<valueType>::operator[](const int &pos)
 }
 
 template <class valueType>
-const valueType &Array<valueType>::back() const {return (*this)[tot - 1];}
+const valueType &Array<valueType>::back() const {return *crbegin();}
 
 template <class valueType>
-valueType &Array<valueType>::back(){return const_cast<valueType &>(static_cast<const Array<valueType> &>(*this).back());}
+valueType &Array<valueType>::back(){return *rbegin();}
 
 template <class valueType>
 Array<valueType>::~Array(){delete [] array;}

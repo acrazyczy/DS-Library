@@ -55,14 +55,16 @@ public:
 
 		iterator &operator++();
 		iterator operator++(int);
-		iterator operator+(const int &);
+		iterator operator+(const int &) const;
 
 		iterator &operator--();
 		iterator operator--(int);
-		iterator operator-(const int &);
+		iterator operator-(const int &) const;
 	};
 
 	typedef Const_Iterator<iterator> const_iterator;
+	typedef Reverse_Iterator<iterator> reverse_iterator;
+	typedef Const_Reverse_Iterator<iterator> const_reverse_iterator;
 
 	AVLTree() : root(new Node) , leftmost(root) , tot(0) {}
 	AVLTree(const AVLTree<keyType , valueType , compare> &);
@@ -80,8 +82,12 @@ public:
 
 	const_iterator cbegin() const;
 	iterator begin();
+	const_reverse_iterator crbegin() const;
+	reverse_iterator rbegin();
 	const_iterator cend() const;
 	iterator end();
+	const_reverse_iterator crend() const;
+	reverse_iterator rend();
 
 	~AVLTree();
 };
@@ -117,7 +123,7 @@ typename AVLTree<keyType , valueType , compare>::iterator AVLTree<keyType , valu
 }
 
 template <class keyType , class valueType , class compare>
-typename AVLTree<keyType , valueType , compare>::iterator AVLTree<keyType , valueType , compare>::iterator::operator+(const int &x)
+typename AVLTree<keyType , valueType , compare>::iterator AVLTree<keyType , valueType , compare>::iterator::operator+(const int &x) const
 {
 	if (x < 0) return operator-(-x);
 	iterator tmp = *this;
@@ -147,7 +153,7 @@ typename AVLTree<keyType , valueType , compare>::iterator AVLTree<keyType , valu
 }
 
 template <class keyType , class valueType , class compare>
-typename AVLTree<keyType , valueType , compare>::iterator AVLTree<keyType , valueType , compare>::iterator::operator-(const int &x)
+typename AVLTree<keyType , valueType , compare>::iterator AVLTree<keyType , valueType , compare>::iterator::operator-(const int &x) const
 {
 	if (x < 0) return operator+(-x);
 	iterator tmp = *this;
@@ -223,10 +229,22 @@ template <class keyType , class valueType , class compare>
 typename AVLTree<keyType , valueType , compare>::iterator AVLTree<keyType , valueType , compare>::begin(){return iterator(leftmost);}
 
 template <class keyType , class valueType , class compare>
+typename AVLTree<keyType , valueType , compare>::const_reverse_iterator AVLTree<keyType , valueType , compare>::crbegin() const {return const_reverse_iterator(root);}
+
+template <class keyType , class valueType , class compare>
+typename AVLTree<keyType , valueType , compare>::reverse_iterator AVLTree<keyType , valueType , compare>::rbegin(){return reverse_iterator(root);}
+
+template <class keyType , class valueType , class compare>
 typename AVLTree<keyType , valueType , compare>::const_iterator AVLTree<keyType , valueType , compare>::cend() const {return const_iterator(root);}
 
 template <class keyType , class valueType , class compare>
 typename AVLTree<keyType , valueType , compare>::iterator AVLTree<keyType , valueType , compare>::end(){return iterator(root);}
+
+template <class keyType , class valueType , class compare>
+typename AVLTree<keyType , valueType , compare>::const_reverse_iterator AVLTree<keyType , valueType , compare>::crend() const {return const_reverse_iterator(leftmost);}
+
+template <class keyType , class valueType , class compare>
+typename AVLTree<keyType , valueType , compare>::reverse_iterator AVLTree<keyType , valueType , compare>::rend(){return reverse_iterator(leftmost);}
 
 template <class keyType , class valueType , class compare>
 AVLTree<keyType , valueType , compare>::~AVLTree()
