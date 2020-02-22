@@ -18,6 +18,7 @@ include_directories(
         PriorityQueue/BinomialHeap
         BinarySearchTree
         BinarySearchTree/AVLTree
+        BinarySearchTree/RBTree
         TestProgram
         Exception
         Iterator
@@ -25,5 +26,5 @@ include_directories(
 set(src_dir
         Exception/Exception.h
         TestProgram/main.cpp
-        LinearList/LinearList.h LinearList/Array/Array.h LinearList/LinkedList/LinkedList.h Queue/Queue.h Stack/Stack.h PriorityQueue/PriorityQueue.h PriorityQueue/BinaryHeap/BinaryHeap.h PriorityQueue/LeftistTree/LeftistTree.h PriorityQueue/SkewHeap/SkewHeap.h PriorityQueue/BinomialHeap/BinomialHeap.h BinarySearchTree/AVLTree/AVLTree.h Iterator/Iterator.h)
+        LinearList/LinearList.h LinearList/Array/Array.h LinearList/LinkedList/LinkedList.h Queue/Queue.h Stack/Stack.h PriorityQueue/PriorityQueue.h PriorityQueue/BinaryHeap/BinaryHeap.h PriorityQueue/LeftistTree/LeftistTree.h PriorityQueue/SkewHeap/SkewHeap.h PriorityQueue/BinomialHeap/BinomialHeap.h BinarySearchTree/AVLTree/AVLTree.h Iterator/Iterator.h BinarySearchTree/RBTree/RBTree.h)
 add_executable(DSLib ${src_dir})
